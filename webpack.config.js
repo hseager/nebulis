@@ -37,7 +37,17 @@ module.exports = [
   Object.assign(
     {
       target: 'electron-main',
-      entry: { main: './src/main.tsx' },
+      entry: { main: './src/main.ts' },
+      node: {
+        __dirname: false,
+      },
+    },
+    commonConfig
+  ),
+  Object.assign(
+    {
+      target: 'electron-preload',
+      entry: { preload: './src/preload.ts' },
     },
     commonConfig
   ),
