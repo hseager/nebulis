@@ -21,18 +21,20 @@ const Controls: React.FC = () => {
   }, [downloadFolder])
 
   return (
-    <>
-      <div>
-        <label>Library Folder</label>
-        <input name="directory" type="text" value={downloadFolder} readOnly />
-        <button onClick={() => api.send(RequestType.UpdateDownloadFolder)}>Change</button>
+    <div className="bg-slate-800 p-4">
+      <div className="mb-4">
+        <label className="block">Library Folder</label>
+        <input name="directory" type="text" className="w-3/4 bg-slate-200 text-slate-800 px-2 py-1 outline-none" value={downloadFolder} readOnly />
+        <button onClick={() => api.send(RequestType.UpdateDownloadFolder)} className="bg-indigo-900 px-2 py-1">
+          change
+        </button>
       </div>
       <div>
-        <label>Youtube URL</label>
-        <input type="text" value={youtubeUrl} />
-        <button>Search</button>
+        <label className="block">Youtube URL</label>
+        <input type="text" value={youtubeUrl} className="w-3/4 bg-slate-200 text-slate-800 px-2 py-1 outline-none" onChange={() => {}} />
+        <button className="bg-indigo-900 px-2 py-1">search</button>
       </div>
-    </>
+    </div>
   )
 }
 
