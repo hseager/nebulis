@@ -1,7 +1,6 @@
-import { app, BrowserWindow, dialog, ipcMain } from 'electron'
+import { app, BrowserWindow } from 'electron'
 import path from 'path'
-import RequestType from './types/RequestType'
-import ResponseType from './types/ResponseType'
+import initIpcEvents from './ipcEvents'
 
 let win: BrowserWindow
 
@@ -18,21 +17,17 @@ const createWindow = () => {
   win.loadFile('dist/index.html')
 }
 
-app.whenReady().then(() => {
-  createWindow()
+app
+  .whenReady()
+  .then(() => {
+    createWindow()
 
-  // Open a window if none are open (macOS)
-  app.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length === 0) createWindow()
+    // Open a window if none are open (macOS)
+    app.on('activate', () => {
+      if (BrowserWindow.getAllWindows().length === 0) createWindow()
+    })
   })
-})
-
-ipcMain.on(
-  RequestType.ChangeDownloadFolder,
-  (event: Event, something: string) => {
-    win.webContents.send(ResponseType.ChangeDownloadFolder, something)
-  }
-)
+  .then(() => initIpcEvents(win))
 
 // Quit the app when all windows are closed (Windows & Linux)
 app.on('window-all-closed', () => {

@@ -1,5 +1,6 @@
 enum RequestType {
-  ChangeDownloadFolder = 'change-download-folder-request',
+  UpdateDownloadFolder = 'update-download-folder-request',
+  GetPreference = 'get-preference-request',
 }
 
 export default RequestType

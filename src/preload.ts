@@ -4,7 +4,7 @@ import ResponseType from './types/ResponseType'
 
 contextBridge.exposeInMainWorld('api', {
   send: (channel: RequestType, data: any) => {
-    let validChannels = [RequestType.ChangeDownloadFolder]
+    let validChannels = Object.values(RequestType)
     if (validChannels.includes(channel)) {
       ipcRenderer.send(channel, data)
     } else {
@@ -12,7 +12,7 @@ contextBridge.exposeInMainWorld('api', {
     }
   },
   receive: (channel: ResponseType, func: Function) => {
-    let validChannels = [ResponseType.ChangeDownloadFolder]
+    let validChannels = Object.values(ResponseType)
     if (validChannels.includes(channel)) {
       ipcRenderer.once(channel, (event: Event, ...args: any) => func(...args))
     } else {
