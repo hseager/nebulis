@@ -2,6 +2,7 @@ import { app, BrowserWindow, dialog, ipcMain } from 'electron'
 import Preference from './types/Preference'
 import RequestType from './types/RequestType'
 import ResponseType from './types/ResponseType'
+import ytdl from 'ytdl-core'
 
 const initIpcEvents = (win: BrowserWindow) => {
   ipcMain.on(RequestType.UpdateDownloadFolder, () => {
@@ -21,6 +22,10 @@ const initIpcEvents = (win: BrowserWindow) => {
         win.webContents.send(ResponseType.UpdateDownloadFolder, app.getPath('downloads'))
         break
     }
+  })
+
+  ipcMain.on(RequestType.GetVideoInfo, (event: Event, youtubeUrl: string) => {
+    ytdl.getBasicInfo(youtubeUrl).then((res) => console.log(res))
   })
 }
 
