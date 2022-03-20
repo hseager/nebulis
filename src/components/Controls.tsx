@@ -1,9 +1,11 @@
 import React, { ChangeEventHandler } from 'react'
+import RequestType from '../types/RequestType'
+import ResponseType from '../types/ResponseType'
 
 const Controls: React.FC = () => {
   const changeDownloadFolder = (event: React.ChangeEvent<HTMLInputElement>) => {
-    window.api.send('change-directory-request', event.target.value)
-    window.api.receive('change-directory-response', (data: any) => {
+    window.api.send(RequestType.ChangeDownloadFolder, event.target.value)
+    window.api.receive(ResponseType.ChangeDownloadFolder, (data: any) => {
       console.log(`received: ${data}`)
     })
   }

@@ -1,16 +1,22 @@
-const { contextBridge, ipcRenderer } = require('electron')
+import { contextBridge, ipcRenderer } from 'electron'
+import RequestType from './types/RequestType'
+import ResponseType from './types/ResponseType'
 
 contextBridge.exposeInMainWorld('api', {
-  send: (channel: string, data: any) => {
-    let validChannels = ['change-directory-request']
+  send: (channel: RequestType, data: any) => {
+    let validChannels = [RequestType.ChangeDownloadFolder]
     if (validChannels.includes(channel)) {
       ipcRenderer.send(channel, data)
+    } else {
+      console.error(`Invalid RequestType: ${channel}`)
     }
   },
-  receive: (channel: string, func: Function) => {
-    let validChannels = ['change-directory-response']
+  receive: (channel: ResponseType, func: Function) => {
+    let validChannels = [ResponseType.ChangeDownloadFolder]
     if (validChannels.includes(channel)) {
-      ipcRenderer.once(channel, (event: any, ...args: any) => func(...args))
+      ipcRenderer.once(channel, (event: Event, ...args: any) => func(...args))
+    } else {
+      console.error(`Invalid ResponseType: ${channel}`)
     }
   },
 })

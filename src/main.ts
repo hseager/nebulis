@@ -1,7 +1,9 @@
-const { app, BrowserWindow, dialog, ipcMain } = require('electron')
-const path = require('path')
+import { app, BrowserWindow, dialog, ipcMain } from 'electron'
+import path from 'path'
+import RequestType from './types/RequestType'
+import ResponseType from './types/ResponseType'
 
-let win: any
+let win: BrowserWindow
 
 const createWindow = () => {
   win = new BrowserWindow({
@@ -9,7 +11,6 @@ const createWindow = () => {
     height: 600,
     webPreferences: {
       contextIsolation: true,
-      enableRemoteModule: false,
       preload: path.join(__dirname, 'preload.js'),
     },
   })
@@ -26,9 +27,12 @@ app.whenReady().then(() => {
   })
 })
 
-ipcMain.on('change-directory-request', (event: Event, something: string) => {
-  win.webContents.send('change-directory-response', something)
-})
+ipcMain.on(
+  RequestType.ChangeDownloadFolder,
+  (event: Event, something: string) => {
+    win.webContents.send(ResponseType.ChangeDownloadFolder, something)
+  }
+)
 
 // Quit the app when all windows are closed (Windows & Linux)
 app.on('window-all-closed', () => {
