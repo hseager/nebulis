@@ -8,10 +8,10 @@ const { api } = window
 
 type VideoInfoProps = {
   youTubeUrl: string
-  downloadFolder: string
+  libraryFolder: string
 }
 
-const VideoInfo = ({ youTubeUrl, downloadFolder }: VideoInfoProps) => {
+const VideoInfo = ({ youTubeUrl, libraryFolder }: VideoInfoProps) => {
   const [videoInfo, setVideoInfo] = useState<videoInfo>()
 
   useEffect(() => {
@@ -24,7 +24,7 @@ const VideoInfo = ({ youTubeUrl, downloadFolder }: VideoInfoProps) => {
     if (videoInfo)
       api.send(RequestType.DownloadVideo, {
         youTubeUrl,
-        downloadFolder,
+        libraryFolder,
         videoId: videoInfo.videoDetails.videoId,
       })
   }

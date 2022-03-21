@@ -6,19 +6,19 @@ const { api } = window
 type ControlProps = {
   youTubeUrl: string
   setYouTubeUrl: Function
-  downloadFolder: string
+  libraryFolder: string
 }
 
-const Controls = ({ youTubeUrl, setYouTubeUrl, downloadFolder }: ControlProps) => {
-  const updateDownloadFolder = () => api.send(RequestType.UpdateDownloadFolder)
+const Controls = ({ youTubeUrl, setYouTubeUrl, libraryFolder }: ControlProps) => {
+  const updateLibraryFolder = () => api.send(RequestType.UpdateLibraryFolder)
   const getVideoInfo = () => api.send(RequestType.GetVideoInfo, youTubeUrl)
 
   return (
     <div className="bg-slate-800 p-4 mb-8">
       <div className="mb-4">
         <label className="block">Library Folder</label>
-        <input name="directory" type="text" className="w-3/4 bg-slate-200 text-slate-800 px-2 py-1 outline-none" value={downloadFolder} readOnly />
-        <button onClick={() => updateDownloadFolder()} className="bg-indigo-900 px-2 py-1">
+        <input name="directory" type="text" className="w-3/4 bg-slate-200 text-slate-800 px-2 py-1 outline-none" value={libraryFolder} readOnly />
+        <button onClick={() => updateLibraryFolder()} className="bg-indigo-900 px-2 py-1">
           change
         </button>
       </div>

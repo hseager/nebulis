@@ -1,5 +1,5 @@
 enum Preference {
-  DownloadFolder = 'downloadFolder',
+  LibraryFolder = 'libraryFolder',
 }
 
 export default Preference

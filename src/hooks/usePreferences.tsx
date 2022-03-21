@@ -6,12 +6,12 @@ import Preference from '../types/Preference'
 const { api } = window
 
 const usePreferences = () => {
-  const [downloadFolder, setDownloadFolder] = useState(localStorage.getItem(LocalStorageKey.DownloadFolder) || '')
-  if (!downloadFolder) api.send(RequestType.GetPreference, Preference.DownloadFolder)
+  const [libraryFolder, setLibraryFolder] = useState(localStorage.getItem(LocalStorageKey.LibraryFolder) || '')
+  if (!libraryFolder) api.send(RequestType.GetPreference, Preference.LibraryFolder)
 
   return {
-    downloadFolder,
-    setDownloadFolder,
+    libraryFolder,
+    setLibraryFolder,
   }
 }
 

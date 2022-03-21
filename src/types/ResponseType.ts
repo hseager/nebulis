@@ -1,5 +1,5 @@
 enum ResponseType {
-  UpdateDownloadFolder = 'update-download-folder-response',
+  UpdateLibraryFolder = 'update-library-folder-response',
   GetVideoInfo = 'get-video-info-response',
 }
 

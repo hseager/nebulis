@@ -1,5 +1,5 @@
 enum LocalStorageKey {
-  DownloadFolder = 'downloadFolder',
+  LibraryFolder = 'libraryFolder',
 }
 
 export default LocalStorageKey
