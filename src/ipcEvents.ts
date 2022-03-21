@@ -34,11 +34,24 @@ const initIpcEvents = (win: BrowserWindow) => {
     }
   })
 
+  // TODO: make response class that handles errors and data
   ipcMain.on(RequestType.DownloadVideo, (event: Event, { youTubeUrl, libraryFolder, videoId }: { youTubeUrl: string; libraryFolder: string; videoId: string }) => {
-    const fullPath = path.join(libraryFolder, `tmp_${videoId}.mp4`)
-    const videoDownload = ytdl(youTubeUrl, { filter: 'audioonly' })
+    downloadMp4Video(youTubeUrl, libraryFolder, videoId)
+      .then((folder) => console.log(folder))
+      .catch((error) => console.log(error))
+  })
+}
 
-    videoDownload.pipe(fs.createWriteStream(fullPath)).on('finish', () => console.log('Finished!'))
+const downloadMp4Video = (youTubeUrl: string, libraryFolder: string, videoId: string) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const fullPath = path.join(libraryFolder, `tmp_${videoId}.mp4`)
+      const videoDownload = ytdl(youTubeUrl, { filter: 'audioonly' })
+
+      videoDownload.pipe(fs.createWriteStream(fullPath)).on('finish', () => resolve(fullPath))
+    } catch (error) {
+      reject(error)
+    }
   })
 }
 
