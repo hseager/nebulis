@@ -14,7 +14,7 @@ contextBridge.exposeInMainWorld('api', {
   receive: (channel: ResponseType, func: Function) => {
     let validChannels = Object.values(ResponseType)
     if (validChannels.includes(channel)) {
-      ipcRenderer.once(channel, (event: Event, ...args: any) => func(...args))
+      ipcRenderer.on(channel, (event: Event, ...args: any) => func(...args))
     } else {
       console.error(`Invalid ResponseType: ${channel}`)
     }
