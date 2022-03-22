@@ -29,7 +29,8 @@ const VideoInfo = ({ youTubeUrl, libraryFolder, setError }: VideoInfoProps) => {
           libraryFolder,
           videoId: videoInfo.videoDetails.videoId,
         })
-        .catch((error: Error) => setError(error))
+        .then(() => console.log('Done!!!'))
+        .catch(setError)
     }
   }
 

@@ -1,6 +1,7 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const RemovePlugin = require('remove-files-webpack-plugin')
+const webpack = require('webpack')
 
 const srcDir = path.resolve(__dirname, 'src')
 const outputDir = path.resolve(__dirname, 'dist')
@@ -40,6 +41,14 @@ module.exports = [
       entry: { main: './src/main.ts' },
       node: {
         __dirname: false,
+      },
+      plugins: [
+        new webpack.DefinePlugin({
+          'process.env.FLUENTFFMPEG_COV': false,
+        }),
+      ],
+      externals: {
+        'ffmpeg-static': 'ffmpeg-static',
       },
     },
     commonConfig
