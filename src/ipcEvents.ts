@@ -7,18 +7,20 @@ import fs from 'fs-extra'
 import * as path from 'path'
 
 const initIpcEvents = (win: BrowserWindow) => {
-  ipcMain.on(RequestType.UpdateLibraryFolder, () => {
-    dialog
-      .showOpenDialog(win, {
-        properties: ['openDirectory'],
-      })
-      .then(({ canceled, filePaths }) => {
-        if (!canceled) win.webContents.send(ResponseType.UpdateLibraryFolder, filePaths)
-      })
-      .catch((error) => console.error(error))
+  ipcMain.handle(RequestType.UpdateLibraryFolder, () => {
+    return new Promise((resolve, reject) => {
+      dialog
+        .showOpenDialog(win, {
+          properties: ['openDirectory'],
+        })
+        .then(({ canceled, filePaths }) => {
+          if (!canceled) win.webContents.send(ResponseType.UpdateLibraryFolder, filePaths)
+        })
+        .catch((error) => reject(error))
+    })
   })
 
-  ipcMain.on(RequestType.GetPreference, (event: Event, preference: Preference) => {
+  ipcMain.handle(RequestType.GetPreference, (event: Event, preference: Preference) => {
     switch (preference) {
       case Preference.LibraryFolder:
         win.webContents.send(ResponseType.UpdateLibraryFolder, app.getPath('downloads'))
@@ -26,19 +28,20 @@ const initIpcEvents = (win: BrowserWindow) => {
     }
   })
 
-  ipcMain.on(RequestType.GetVideoInfo, (event: Event, youTubeUrl: string) => {
-    try {
-      ytdl.getBasicInfo(youTubeUrl).then((response) => win.webContents.send(ResponseType.GetVideoInfo, response))
-    } catch (error) {
-      console.log(error)
-    }
+  ipcMain.handle(RequestType.GetVideoInfo, (event: Event, youTubeUrl: string) => {
+    return new Promise((resolve, reject) => {
+      ytdl
+        .getBasicInfo(youTubeUrl)
+        .then((response) => win.webContents.send(ResponseType.GetVideoInfo, response))
+        .then(resolve)
+        .catch(reject)
+    })
   })
 
-  // TODO: make response class that handles errors and data
-  ipcMain.on(RequestType.DownloadVideo, (event: Event, { youTubeUrl, libraryFolder, videoId }: { youTubeUrl: string; libraryFolder: string; videoId: string }) => {
-    downloadMp4Video(youTubeUrl, libraryFolder, videoId)
-      .then((folder) => console.log(folder))
-      .catch((error) => console.log(error))
+  ipcMain.handle(RequestType.Download, (event: Event, { youTubeUrl, libraryFolder, videoId }: { youTubeUrl: string; libraryFolder: string; videoId: string }) => {
+    return new Promise((resolve, reject) => {
+      downloadMp4Video(youTubeUrl, libraryFolder, videoId).then(resolve).catch(reject)
+    })
   })
 }
 

@@ -9,24 +9,28 @@ const { api } = window
 type VideoInfoProps = {
   youTubeUrl: string
   libraryFolder: string
+  setError: Function
 }
 
-const VideoInfo = ({ youTubeUrl, libraryFolder }: VideoInfoProps) => {
+const VideoInfo = ({ youTubeUrl, libraryFolder, setError }: VideoInfoProps) => {
   const [videoInfo, setVideoInfo] = useState<videoInfo>()
 
   useEffect(() => {
     api.receive(ResponseType.GetVideoInfo, (videoInfo: videoInfo) => {
       setVideoInfo(videoInfo)
     })
-  }, [videoInfo])
+  }, [])
 
-  const getVideoInfo = () => {
-    if (videoInfo)
-      api.send(RequestType.DownloadVideo, {
-        youTubeUrl,
-        libraryFolder,
-        videoId: videoInfo.videoDetails.videoId,
-      })
+  const download = () => {
+    if (videoInfo) {
+      api
+        .send(RequestType.Download, {
+          youTubeUrl,
+          libraryFolder,
+          videoId: videoInfo.videoDetails.videoId,
+        })
+        .catch((error: Error) => setError(error))
+    }
   }
 
   return (
@@ -40,7 +44,7 @@ const VideoInfo = ({ youTubeUrl, libraryFolder }: VideoInfoProps) => {
             <li>Length: {convertSecondstoMintues(videoInfo.videoDetails.lengthSeconds)}</li>
             <img src={videoInfo.videoDetails.thumbnails[0].url} />
           </ul>
-          <button className="bg-indigo-900 px-2 py-1" onClick={getVideoInfo}>
+          <button className="bg-indigo-900 px-2 py-1" onClick={download}>
             download
           </button>
         </div>

@@ -7,11 +7,16 @@ type ControlProps = {
   youTubeUrl: string
   setYouTubeUrl: Function
   libraryFolder: string
+  setError: Function
 }
 
-const Controls = ({ youTubeUrl, setYouTubeUrl, libraryFolder }: ControlProps) => {
-  const updateLibraryFolder = () => api.send(RequestType.UpdateLibraryFolder)
-  const getVideoInfo = () => api.send(RequestType.GetVideoInfo, youTubeUrl)
+const Controls = ({ youTubeUrl, setYouTubeUrl, libraryFolder, setError }: ControlProps) => {
+  const updateLibraryFolder = () => api.send(RequestType.UpdateLibraryFolder).catch(setError)
+  const getVideoInfo = () =>
+    api
+      .send(RequestType.GetVideoInfo, youTubeUrl)
+      .then(() => setError(''))
+      .catch(setError)
 
   return (
     <div className="bg-slate-800 p-4 mb-8">

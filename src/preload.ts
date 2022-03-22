@@ -4,12 +4,18 @@ import ResponseType from './types/ResponseType'
 
 contextBridge.exposeInMainWorld('api', {
   send: (channel: RequestType, data: any) => {
-    let validChannels = Object.values(RequestType)
-    if (validChannels.includes(channel)) {
-      ipcRenderer.send(channel, data)
-    } else {
-      console.error(`Invalid RequestType: ${channel}`)
-    }
+    return new Promise((resolve, reject) => {
+      try {
+        let validChannels = Object.values(RequestType)
+        if (validChannels.includes(channel)) {
+          ipcRenderer.invoke(channel, data).then(resolve).catch(reject)
+        } else {
+          reject(new Error(`Invalid RequestType: ${channel}`))
+        }
+      } catch (error) {
+        reject(error)
+      }
+    })
   },
   receive: (channel: ResponseType, func: Function) => {
     let validChannels = Object.values(ResponseType)
