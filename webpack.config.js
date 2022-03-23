@@ -1,10 +1,12 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const RemovePlugin = require('remove-files-webpack-plugin')
+const CopyPlugin = require('copy-webpack-plugin')
 const webpack = require('webpack')
 
 const srcDir = path.resolve(__dirname, 'src')
 const outputDir = path.resolve(__dirname, 'dist')
+const ffmpegPath = path.join('node_modules', 'ffmpeg-static')
 
 const commonConfig = {
   output: {
@@ -46,10 +48,15 @@ module.exports = [
         new webpack.DefinePlugin({
           'process.env.FLUENTFFMPEG_COV': false,
         }),
+        new CopyPlugin({
+          patterns: [
+            {
+              from: path.resolve(ffmpegPath, 'ffmpeg.exe'),
+              to: outputDir,
+            },
+          ],
+        }),
       ],
-      externals: {
-        'ffmpeg-static': 'ffmpeg-static',
-      },
     },
     commonConfig
   ),
