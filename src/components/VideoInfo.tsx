@@ -1,26 +1,18 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { videoInfo } from 'ytdl-core'
 import RequestType from '../types/RequestType'
-import ResponseType from '../types/ResponseType'
 import { convertSecondstoMintues } from '../utils/DateTime'
 
 const { api } = window
 
 type VideoInfoProps = {
+  videoInfo: videoInfo | undefined
   youTubeUrl: string
   libraryFolder: string
   setError: Function
 }
 
-const VideoInfo = ({ youTubeUrl, libraryFolder, setError }: VideoInfoProps) => {
-  const [videoInfo, setVideoInfo] = useState<videoInfo>()
-
-  useEffect(() => {
-    api.receive(ResponseType.GetVideoInfo, (videoInfo: videoInfo) => {
-      setVideoInfo(videoInfo)
-    })
-  }, [])
-
+const VideoInfo = ({ videoInfo, youTubeUrl, libraryFolder, setError }: VideoInfoProps) => {
   const download = () => {
     if (videoInfo) {
       api

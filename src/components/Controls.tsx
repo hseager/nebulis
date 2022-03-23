@@ -1,4 +1,6 @@
 import React from 'react'
+import { videoInfo } from 'ytdl-core'
+import LocalStorageKey from '../types/LocalStorageKey'
 import RequestType from '../types/RequestType'
 
 const { api } = window
@@ -7,15 +9,28 @@ type ControlProps = {
   youTubeUrl: string
   setYouTubeUrl: Function
   libraryFolder: string
+  setLibraryFolder: Function
+  setVideoInfo: Function
   setError: Function
 }
 
-const Controls = ({ youTubeUrl, setYouTubeUrl, libraryFolder, setError }: ControlProps) => {
-  const updateLibraryFolder = () => api.send(RequestType.UpdateLibraryFolder).catch(setError)
+const Controls = ({ youTubeUrl, setYouTubeUrl, libraryFolder, setLibraryFolder, setVideoInfo, setError }: ControlProps) => {
+  const updateLibraryFolder = () =>
+    api
+      .send(RequestType.UpdateLibraryFolder)
+      .then((path: string) => {
+        setLibraryFolder(path)
+        localStorage.setItem(LocalStorageKey.LibraryFolder, path)
+      })
+      .catch(setError)
+
   const getVideoInfo = () =>
     api
       .send(RequestType.GetVideoInfo, youTubeUrl)
-      .then(() => setError(''))
+      .then((videoInfo: videoInfo) => {
+        setError('')
+        setVideoInfo(videoInfo)
+      })
       .catch(setError)
 
   return (

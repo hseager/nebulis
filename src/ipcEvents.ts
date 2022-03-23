@@ -1,7 +1,6 @@
 import { app, BrowserWindow, dialog, ipcMain } from 'electron'
 import Preference from './types/Preference'
 import RequestType from './types/RequestType'
-import ResponseType from './types/ResponseType'
 import ytdl from 'ytdl-core'
 import fs from 'fs-extra'
 import * as path from 'path'
@@ -11,42 +10,56 @@ import binaries from 'ffmpeg-static'
 const initIpcEvents = (win: BrowserWindow) => {
   ipcMain.handle(RequestType.UpdateLibraryFolder, () => {
     return new Promise((resolve, reject) => {
-      dialog
-        .showOpenDialog(win, {
-          properties: ['openDirectory'],
-        })
-        .then(({ canceled, filePaths }) => {
-          if (!canceled) win.webContents.send(ResponseType.UpdateLibraryFolder, filePaths)
-        })
-        .catch((error) => reject(error))
+      try {
+        dialog
+          .showOpenDialog(win, {
+            properties: ['openDirectory'],
+          })
+          .then(({ canceled, filePaths }) => {
+            if (!canceled) resolve(filePaths)
+          })
+          .catch((error) => reject(error))
+      } catch (error) {
+        reject(error)
+      }
     })
   })
 
   ipcMain.handle(RequestType.GetPreference, (event: Event, preference: Preference) => {
-    switch (preference) {
-      case Preference.LibraryFolder:
-        win.webContents.send(ResponseType.UpdateLibraryFolder, app.getPath('downloads'))
-        break
-    }
+    return new Promise((resolve, reject) => {
+      try {
+        switch (preference) {
+          case Preference.LibraryFolder:
+            resolve(app.getPath('downloads'))
+            break
+        }
+      } catch (error) {
+        reject(error)
+      }
+    })
   })
 
   ipcMain.handle(RequestType.GetVideoInfo, (event: Event, youTubeUrl: string) => {
     return new Promise((resolve, reject) => {
-      ytdl
-        .getBasicInfo(youTubeUrl)
-        .then((response) => win.webContents.send(ResponseType.GetVideoInfo, response))
-        .then(resolve)
-        .catch(reject)
+      try {
+        ytdl.getBasicInfo(youTubeUrl).then(resolve).catch(reject)
+      } catch (error) {
+        reject(error)
+      }
     })
   })
 
   ipcMain.handle(RequestType.Download, (event: Event, { youTubeUrl, libraryFolder, videoId }: { youTubeUrl: string; libraryFolder: string; videoId: string }) => {
     return new Promise((resolve, reject) => {
-      downloadMp4Video(youTubeUrl, libraryFolder, videoId)
-        .then((tempMp4Path: any) => convertMp4ToMp3(tempMp4Path, libraryFolder, videoId))
-        .then((tempMp4Path: any) => fs.unlinkSync(tempMp4Path))
-        .then(resolve)
-        .catch(reject)
+      try {
+        downloadMp4Video(youTubeUrl, libraryFolder, videoId)
+          .then((tempMp4Path: any) => convertMp4ToMp3(tempMp4Path, libraryFolder, videoId))
+          .then((tempMp4Path: any) => fs.unlinkSync(tempMp4Path))
+          .then(resolve)
+          .catch(reject)
+      } catch (error) {
+        reject(error)
+      }
     })
   })
 }
