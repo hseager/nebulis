@@ -10,9 +10,10 @@ type VideoInfoProps = {
   youTubeUrl: string
   libraryFolder: string
   setError: Function
+  bitrate: string
 }
 
-const VideoInfo = ({ videoInfo, youTubeUrl, libraryFolder, setError }: VideoInfoProps) => {
+const VideoInfo = ({ videoInfo, youTubeUrl, libraryFolder, bitrate, setError }: VideoInfoProps) => {
   const download = () => {
     if (videoInfo) {
       api
@@ -20,6 +21,7 @@ const VideoInfo = ({ videoInfo, youTubeUrl, libraryFolder, setError }: VideoInfo
           youTubeUrl,
           libraryFolder,
           videoId: videoInfo.videoDetails.videoId,
+          bitrate,
         })
         .then(() => console.log('Done!!!'))
         .catch(setError)

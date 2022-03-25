@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import LocalStorageKey from '../types/LocalStorageKey'
-import SearchBar from './Controls'
+import SearchBar from './SearchBar'
 import VideoInfo from './VideoInfo'
 import Error from './Error'
 import RequestType from '../types/RequestType'
@@ -17,6 +17,7 @@ const App: React.FC = () => {
   const [videoInfo, setVideoInfo] = useState<videoInfo>()
   const [error, setError] = useState()
   const [preferencesOpen, setPreferencesOpen] = useState(false)
+  const [bitrate, setBitrate] = useState(localStorage.getItem(LocalStorageKey.Bitrate) || '160')
 
   if (!libraryFolder) api.send(RequestType.GetPreference, Preference.LibraryFolder).then(setLibraryFolder).catch(setError)
 
@@ -24,10 +25,10 @@ const App: React.FC = () => {
     <div className="max-w-2xl m-auto p-12">
       <h2 className="mb-8">n e b u l i s</h2>
       <Toolbar preferencesOpen={preferencesOpen} setPreferencesOpen={setPreferencesOpen} />
-      {preferencesOpen && <Preferences libraryFolder={libraryFolder} setLibraryFolder={setLibraryFolder} setError={setError} />}
+      {preferencesOpen && <Preferences libraryFolder={libraryFolder} setLibraryFolder={setLibraryFolder} bitrate={bitrate} setBitrate={setBitrate} setError={setError} />}
       {error && <Error error={error} />}
       <SearchBar youTubeUrl={youTubeUrl} setYouTubeUrl={setYouTubeUrl} setVideoInfo={setVideoInfo} setError={setError} />
-      <VideoInfo videoInfo={videoInfo} youTubeUrl={youTubeUrl} libraryFolder={libraryFolder} setError={setError} />
+      <VideoInfo videoInfo={videoInfo} youTubeUrl={youTubeUrl} libraryFolder={libraryFolder} bitrate={bitrate} setError={setError} />
     </div>
   )
 }

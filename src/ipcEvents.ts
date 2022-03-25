@@ -49,11 +49,11 @@ const initIpcEvents = (win: BrowserWindow) => {
     })
   })
 
-  ipcMain.handle(RequestType.Download, (event: Event, { youTubeUrl, libraryFolder, videoId }: { youTubeUrl: string; libraryFolder: string; videoId: string }) => {
+  ipcMain.handle(RequestType.Download, (event: Event, { youTubeUrl, libraryFolder, videoId, bitrate }: { youTubeUrl: string; libraryFolder: string; videoId: string; bitrate: string }) => {
     return new Promise((resolve, reject) => {
       try {
         downloadMp4Video(youTubeUrl, libraryFolder, videoId)
-          .then((tempMp4Path: any) => convertMp4ToMp3(tempMp4Path, libraryFolder, videoId))
+          .then((tempMp4Path: any) => convertMp4ToMp3(tempMp4Path, libraryFolder, videoId, bitrate))
           .then((tempMp4Path: any) => fs.unlinkSync(tempMp4Path))
           .then(resolve)
           .catch(reject)
@@ -77,13 +77,13 @@ const downloadMp4Video = (youTubeUrl: string, libraryFolder: string, videoId: st
   })
 }
 
-const convertMp4ToMp3 = (tempMp4Path: string, libraryFolder: string, videoId: string) => {
+const convertMp4ToMp3 = (tempMp4Path: string, libraryFolder: string, videoId: string, bitrate: string) => {
   return new Promise((resolve, reject) => {
     try {
       ffmpeg(tempMp4Path)
         .setFfmpegPath(binaries)
         .format('mp3')
-        .audioBitrate(128)
+        .audioBitrate(bitrate)
         .output(fs.createWriteStream(path.join(libraryFolder, `song-${videoId}.mp3`)))
         .on('end', () => resolve(tempMp4Path))
         .run()

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import LocalStorageKey from '../types/LocalStorageKey'
 import RequestType from '../types/RequestType'
 
@@ -7,10 +7,12 @@ const { api } = window
 type PreferencesProps = {
   libraryFolder: string
   setLibraryFolder: Function
+  bitrate: string
+  setBitrate: Function
   setError: Function
 }
 
-const Preferences = ({ libraryFolder, setLibraryFolder, setError }: PreferencesProps) => {
+const Preferences = ({ libraryFolder, setLibraryFolder, bitrate, setBitrate, setError }: PreferencesProps) => {
   const updateLibraryFolder = () =>
     api
       .send(RequestType.UpdateLibraryFolder)
@@ -19,6 +21,12 @@ const Preferences = ({ libraryFolder, setLibraryFolder, setError }: PreferencesP
         localStorage.setItem(LocalStorageKey.LibraryFolder, path)
       })
       .catch(setError)
+
+  const updateBitrate = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const bitrate = event.target.value
+    setBitrate(bitrate)
+    localStorage.setItem(LocalStorageKey.Bitrate, bitrate)
+  }
 
   return (
     <div className="bg-slate-800 p-4 mb-8">
@@ -31,8 +39,12 @@ const Preferences = ({ libraryFolder, setLibraryFolder, setError }: PreferencesP
       </div>
       <div>
         <label className="block">Bitrate</label>
-        <select className="w-3/4 bg-slate-200 text-slate-800 px-2 py-1 outline-none">
-          <option>128</option>
+        <select value={bitrate} onChange={updateBitrate} className="w-3/4 bg-slate-200 text-slate-800 px-2 py-1 outline-none">
+          <option value="65">65 kbps (Low Quality)</option>
+          <option value="130">130 kbps (Radio Quality)</option>
+          <option value="160">160 kbps (CD Quality)</option>
+          <option value="192">192 kbps (High Quality)</option>
+          <option value="320">320 kbps (Full Quality)</option>
         </select>
       </div>
     </div>
