@@ -16,7 +16,6 @@ const SearchBar = ({ youTubeUrl, setYouTubeUrl, setVideoInfo, setError }: Contro
     api
       .send(RequestType.GetVideoInfo, youTubeUrl)
       .then((videoInfo: videoInfo) => {
-        console.log(videoInfo)
         setError('')
         setVideoInfo(videoInfo)
       })

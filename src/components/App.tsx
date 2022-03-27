@@ -28,7 +28,7 @@ const App: React.FC = () => {
       {preferencesOpen && <Preferences libraryFolder={libraryFolder} setLibraryFolder={setLibraryFolder} bitrate={bitrate} setBitrate={setBitrate} setError={setError} />}
       {error && <Error error={error} />}
       <SearchBar youTubeUrl={youTubeUrl} setYouTubeUrl={setYouTubeUrl} setVideoInfo={setVideoInfo} setError={setError} />
-      <VideoInfo videoInfo={videoInfo} youTubeUrl={youTubeUrl} libraryFolder={libraryFolder} bitrate={bitrate} setError={setError} />
+      {videoInfo && <VideoInfo videoInfo={videoInfo} youTubeUrl={youTubeUrl} libraryFolder={libraryFolder} bitrate={bitrate} setError={setError} />}
     </div>
   )
 }

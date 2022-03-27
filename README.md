@@ -2,8 +2,7 @@
 
 # To do
 
-- See if we can get promise resolution back on api.send instead of doing api.receive
-- Bitrate Preference
+- Validation around filename etc
 - Loading states
 - Library
 - Edit song title & meta data

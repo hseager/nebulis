@@ -49,11 +49,11 @@ const initIpcEvents = (win: BrowserWindow) => {
     })
   })
 
-  ipcMain.handle(RequestType.Download, (event: Event, { youTubeUrl, libraryFolder, videoId, bitrate }: { youTubeUrl: string; libraryFolder: string; videoId: string; bitrate: string }) => {
+  ipcMain.handle(RequestType.Download, (event: Event, { youTubeUrl, libraryFolder, videoId, bitrate, filename }: { youTubeUrl: string; libraryFolder: string; videoId: string; bitrate: string; filename: string }) => {
     return new Promise((resolve, reject) => {
       try {
-        downloadMp4Video(youTubeUrl, libraryFolder, videoId)
-          .then((tempMp4Path: any) => convertMp4ToMp3(tempMp4Path, libraryFolder, videoId, bitrate))
+        downloadMp4Video(youTubeUrl, libraryFolder, videoId, filename)
+          .then((tempMp4Path: any) => convertMp4ToMp3(tempMp4Path, libraryFolder, videoId, bitrate, filename))
           .then((tempMp4Path: any) => fs.unlinkSync(tempMp4Path))
           .then(resolve)
           .catch(reject)
@@ -64,10 +64,10 @@ const initIpcEvents = (win: BrowserWindow) => {
   })
 }
 
-const downloadMp4Video = (youTubeUrl: string, libraryFolder: string, videoId: string) => {
+const downloadMp4Video = (youTubeUrl: string, libraryFolder: string, videoId: string, filename: string) => {
   return new Promise((resolve, reject) => {
     try {
-      const fullPath = path.join(libraryFolder, `tmp_${videoId}.mp4`)
+      const fullPath = path.join(libraryFolder, `tmp_${filename}.mp4`)
       const videoDownload = ytdl(youTubeUrl, { filter: 'audioonly' })
 
       videoDownload.pipe(fs.createWriteStream(fullPath)).on('finish', () => resolve(fullPath))
@@ -77,14 +77,14 @@ const downloadMp4Video = (youTubeUrl: string, libraryFolder: string, videoId: st
   })
 }
 
-const convertMp4ToMp3 = (tempMp4Path: string, libraryFolder: string, videoId: string, bitrate: string) => {
+const convertMp4ToMp3 = (tempMp4Path: string, libraryFolder: string, videoId: string, bitrate: string, filename: string) => {
   return new Promise((resolve, reject) => {
     try {
       ffmpeg(tempMp4Path)
         .setFfmpegPath(binaries)
         .format('mp3')
         .audioBitrate(bitrate)
-        .output(fs.createWriteStream(path.join(libraryFolder, `song-${videoId}.mp3`)))
+        .output(fs.createWriteStream(path.join(libraryFolder, `${filename}.mp3`)))
         .on('end', () => resolve(tempMp4Path))
         .run()
     } catch (error) {
