@@ -6,8 +6,12 @@ import fs from 'fs-extra'
 import * as path from 'path'
 import ffmpeg from 'fluent-ffmpeg'
 import binaries from 'ffmpeg-static'
+import ResponseType from './types/ResponseType'
 
 const initIpcEvents = (win: BrowserWindow) => {
+  let isRateLimited = false
+  const rateLimitAmount = 300
+
   ipcMain.handle(RequestType.UpdateLibraryFolder, () => {
     return new Promise((resolve, reject) => {
       try {
@@ -62,35 +66,55 @@ const initIpcEvents = (win: BrowserWindow) => {
       }
     })
   })
-}
 
-const downloadMp4Video = (youTubeUrl: string, libraryFolder: string, videoId: string, filename: string) => {
-  return new Promise((resolve, reject) => {
-    try {
-      const fullPath = path.join(libraryFolder, `tmp_${filename}.mp4`)
-      const videoDownload = ytdl(youTubeUrl, { filter: 'audioonly' })
+  const downloadMp4Video = (youTubeUrl: string, libraryFolder: string, videoId: string, filename: string) => {
+    return new Promise((resolve, reject) => {
+      try {
+        const fullPath = path.join(libraryFolder, `tmp_${filename}.mp4`)
+        const videoDownload = ytdl(youTubeUrl, { filter: 'audioonly' })
 
-      videoDownload.pipe(fs.createWriteStream(fullPath)).on('finish', () => resolve(fullPath))
-    } catch (error) {
-      reject(error)
-    }
-  })
-}
+        videoDownload.on('progress', (chunkLength, downloaded, total) => {
+          if (!isRateLimited) {
+            isRateLimited = true
+            const progress = Math.floor((downloaded / total) * 100)
+            setTimeout(() => {
+              isRateLimited = false
+              win.webContents.send(ResponseType.DownloadProgress, progress)
+            }, rateLimitAmount)
+          }
+        })
 
-const convertMp4ToMp3 = (tempMp4Path: string, libraryFolder: string, videoId: string, bitrate: string, filename: string) => {
-  return new Promise((resolve, reject) => {
-    try {
-      ffmpeg(tempMp4Path)
-        .setFfmpegPath(binaries)
-        .format('mp3')
-        .audioBitrate(bitrate)
-        .output(fs.createWriteStream(path.join(libraryFolder, `${filename}.mp3`)))
-        .on('end', () => resolve(tempMp4Path))
-        .run()
-    } catch (error) {
-      reject(error)
-    }
-  })
+        videoDownload.pipe(fs.createWriteStream(fullPath)).on('finish', () => {
+          //isRateLimited = false
+          //win.webContents.send(ResponseType.DownloadProgress, 100)
+          resolve(fullPath)
+        })
+      } catch (error) {
+        reject(error)
+      }
+    })
+  }
+
+  const convertMp4ToMp3 = (tempMp4Path: string, libraryFolder: string, videoId: string, bitrate: string, filename: string) => {
+    return new Promise((resolve, reject) => {
+      try {
+        ffmpeg(tempMp4Path)
+          .setFfmpegPath(binaries)
+          .format('mp3')
+          .audioBitrate(bitrate)
+          .on('start', (progress) => {
+            win.webContents.send(ResponseType.ConversionProgress, true)
+          })
+          .output(fs.createWriteStream(path.join(libraryFolder, `${filename}.mp3`)))
+          .on('end', () => {
+            win.webContents.send(ResponseType.ConversionProgress, false)
+          })
+          .run()
+      } catch (error) {
+        reject(error)
+      }
+    })
+  }
 }
 
 export default initIpcEvents

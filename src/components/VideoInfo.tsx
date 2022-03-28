@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { videoInfo } from 'ytdl-core'
 import RequestType from '../types/RequestType'
+import ResponseType from '../types/ResponseType'
 import { convertSecondstoMintues } from '../utils/DateTime'
 
 const { api } = window
@@ -15,6 +16,8 @@ type VideoInfoProps = {
 
 const VideoInfo = ({ videoInfo, youTubeUrl, libraryFolder, bitrate, setError }: VideoInfoProps) => {
   const [filename, setFilename] = useState(videoInfo?.videoDetails.title || '')
+  const [downloadProgress, setDownloadProgress] = useState(0)
+  const [conversionProgress, setConversionProgress] = useState(0)
 
   const download = () => {
     if (!filename) return setError(new Error('Please enter a filename'))
@@ -33,6 +36,11 @@ const VideoInfo = ({ videoInfo, youTubeUrl, libraryFolder, bitrate, setError }: 
         .catch(setError)
     }
   }
+
+  useEffect(() => {
+    api.receive(ResponseType.DownloadProgress, (progress: any) => setDownloadProgress(progress))
+    api.receive(ResponseType.ConversionProgress, (progress: any) => setConversionProgress(progress))
+  }, [])
 
   return (
     <>
@@ -54,6 +62,10 @@ const VideoInfo = ({ videoInfo, youTubeUrl, libraryFolder, bitrate, setError }: 
           <button className="bg-indigo-900 px-2 py-1" onClick={download}>
             download
           </button>
+          <div>
+            {downloadProgress > 0 && <p>Downloading: {downloadProgress}%</p>}
+            {conversionProgress > 0 && <p>Converting...</p>}
+          </div>
         </div>
       )}
     </>

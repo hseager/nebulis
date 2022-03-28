@@ -2,10 +2,10 @@
 
 # To do
 
-- Validation around filename etc
-- Loading states
 - Library
 - Edit song title & meta data
+- Styling
+- convertSecondstoMintues zero padding bug
 
 # Setup Dev environment
 
