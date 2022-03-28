@@ -17,7 +17,10 @@ const VideoInfo = ({ videoInfo, youTubeUrl, libraryFolder, bitrate, setError }: 
   const [filename, setFilename] = useState(videoInfo?.videoDetails.title || '')
 
   const download = () => {
+    if (!filename) return setError(new Error('Please enter a filename'))
+
     if (videoInfo) {
+      setError('')
       api
         .send(RequestType.Download, {
           youTubeUrl,
