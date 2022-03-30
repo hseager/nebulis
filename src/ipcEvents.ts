@@ -1,6 +1,7 @@
 import { app, BrowserWindow, dialog, ipcMain } from 'electron'
 import Preference from './types/Preference'
 import RequestType from './types/RequestType'
+import MetaData from './types/MetaData'
 import ytdl from 'ytdl-core'
 import fs from 'fs-extra'
 import * as path from 'path'
@@ -53,11 +54,11 @@ const initIpcEvents = (win: BrowserWindow) => {
     })
   })
 
-  ipcMain.handle(RequestType.Download, (event: Event, { youTubeUrl, libraryFolder, videoId, bitrate, filename }: { youTubeUrl: string; libraryFolder: string; videoId: string; bitrate: string; filename: string }) => {
+  ipcMain.handle(RequestType.Download, (event: Event, { youTubeUrl, libraryFolder, videoId, bitrate, filename, metaData }: { youTubeUrl: string; libraryFolder: string; videoId: string; bitrate: string; filename: string; metaData: MetaData }) => {
     return new Promise((resolve, reject) => {
       try {
         downloadMp4Video(youTubeUrl, libraryFolder, videoId, filename)
-          .then((tempMp4Path: any) => convertMp4ToMp3(tempMp4Path, libraryFolder, videoId, bitrate, filename))
+          .then((tempMp4Path: any) => convertMp4ToMp3(tempMp4Path, libraryFolder, videoId, bitrate, filename, metaData))
           .then((tempMp4Path: any) => fs.unlinkSync(tempMp4Path))
           .then(resolve)
           .catch(reject)
@@ -85,8 +86,6 @@ const initIpcEvents = (win: BrowserWindow) => {
         })
 
         videoDownload.pipe(fs.createWriteStream(fullPath)).on('finish', () => {
-          //isRateLimited = false
-          //win.webContents.send(ResponseType.DownloadProgress, 100)
           resolve(fullPath)
         })
       } catch (error) {
@@ -95,19 +94,22 @@ const initIpcEvents = (win: BrowserWindow) => {
     })
   }
 
-  const convertMp4ToMp3 = (tempMp4Path: string, libraryFolder: string, videoId: string, bitrate: string, filename: string) => {
+  const convertMp4ToMp3 = (tempMp4Path: string, libraryFolder: string, videoId: string, bitrate: string, filename: string, metaData: MetaData) => {
     return new Promise((resolve, reject) => {
       try {
+        const formattedMetaData = createMetaData(metaData)
         ffmpeg(tempMp4Path)
           .setFfmpegPath(binaries)
           .format('mp3')
           .audioBitrate(bitrate)
-          .on('start', (progress) => {
+          .on('start', () => {
             win.webContents.send(ResponseType.ConversionProgress, true)
           })
+          .outputOptions(formattedMetaData)
           .output(fs.createWriteStream(path.join(libraryFolder, `${filename}.mp3`)))
           .on('end', () => {
             win.webContents.send(ResponseType.ConversionProgress, false)
+            resolve(tempMp4Path)
           })
           .run()
       } catch (error) {
@@ -115,6 +117,15 @@ const initIpcEvents = (win: BrowserWindow) => {
       }
     })
   }
+}
+
+const createMetaData = (metaData: MetaData) => {
+  const formattedMetaData = []
+  if (metaData.title) formattedMetaData.push(`-metadata title=${metaData.title}`)
+  if (metaData.artist) formattedMetaData.push(`-metadata artist=${metaData.artist}`)
+  if (metaData.album) formattedMetaData.push(`-metadata album=${metaData.artist}`)
+  if (metaData.genre) formattedMetaData.push(`-metadata genre=${metaData.genre[0]}`)
+  return formattedMetaData
 }
 
 export default initIpcEvents
