@@ -39,7 +39,7 @@ const VideoInfo = ({ videoInfo, youTubeUrl, libraryFolder, bitrate, setError }: 
             title,
             artist,
             album,
-            genre: ['Rock'],
+            genre,
           },
         })
         .then(() => console.log('Done!!!'))

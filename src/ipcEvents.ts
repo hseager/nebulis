@@ -97,7 +97,6 @@ const initIpcEvents = (win: BrowserWindow) => {
   const convertMp4ToMp3 = (tempMp4Path: string, libraryFolder: string, videoId: string, bitrate: string, filename: string, metaData: MetaData) => {
     return new Promise((resolve, reject) => {
       try {
-        const formattedMetaData = createMetaData(metaData)
         ffmpeg(tempMp4Path)
           .setFfmpegPath(binaries)
           .format('mp3')
@@ -105,7 +104,10 @@ const initIpcEvents = (win: BrowserWindow) => {
           .on('start', () => {
             win.webContents.send(ResponseType.ConversionProgress, true)
           })
-          .outputOptions(formattedMetaData)
+          .outputOptions('-metadata', `title=${metaData.title}`)
+          .outputOptions('-metadata', `artist=${metaData.artist}`)
+          .outputOptions('-metadata', `album=${metaData.album}`)
+          .outputOptions('-metadata', `genre=${metaData.genre[0]}`)
           .output(fs.createWriteStream(path.join(libraryFolder, `${filename}.mp3`)))
           .on('end', () => {
             win.webContents.send(ResponseType.ConversionProgress, false)
@@ -117,15 +119,6 @@ const initIpcEvents = (win: BrowserWindow) => {
       }
     })
   }
-}
-
-const createMetaData = (metaData: MetaData) => {
-  const formattedMetaData = []
-  if (metaData.title) formattedMetaData.push(`-metadata title=${metaData.title}`)
-  if (metaData.artist) formattedMetaData.push(`-metadata artist=${metaData.artist}`)
-  if (metaData.album) formattedMetaData.push(`-metadata album=${metaData.artist}`)
-  if (metaData.genre) formattedMetaData.push(`-metadata genre=${metaData.genre[0]}`)
-  return formattedMetaData
 }
 
 export default initIpcEvents
