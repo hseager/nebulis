@@ -3,7 +3,7 @@
 # To do
 
 - Library
-- Edit song title & meta data
+- Add genre tags
 - Styling
 - convertSecondstoMintues zero padding bug
 

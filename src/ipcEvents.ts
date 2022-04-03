@@ -73,12 +73,13 @@ const initIpcEvents = (win: BrowserWindow) => {
       try {
         const fullPath = path.join(libraryFolder, `tmp_${filename}.mp4`)
         const videoDownload = ytdl(youTubeUrl, { filter: 'audioonly' })
+        let progressTimeout: ReturnType<typeof setTimeout>
 
         videoDownload.on('progress', (chunkLength, downloaded, total) => {
           if (!isRateLimited) {
             isRateLimited = true
             const progress = Math.floor((downloaded / total) * 100)
-            setTimeout(() => {
+            progressTimeout = setTimeout(() => {
               isRateLimited = false
               win.webContents.send(ResponseType.DownloadProgress, progress)
             }, rateLimitAmount)
@@ -86,6 +87,8 @@ const initIpcEvents = (win: BrowserWindow) => {
         })
 
         videoDownload.pipe(fs.createWriteStream(fullPath)).on('finish', () => {
+          clearTimeout(progressTimeout)
+          win.webContents.send(ResponseType.DownloadProgress, 100)
           resolve(fullPath)
         })
       } catch (error) {
@@ -111,6 +114,7 @@ const initIpcEvents = (win: BrowserWindow) => {
           .output(fs.createWriteStream(path.join(libraryFolder, `${filename}.mp3`)))
           .on('end', () => {
             win.webContents.send(ResponseType.ConversionProgress, false)
+            win.webContents.send(ResponseType.DownloadProgress, 0)
             resolve(tempMp4Path)
           })
           .run()

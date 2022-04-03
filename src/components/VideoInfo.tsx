@@ -8,13 +8,14 @@ const { api } = window
 
 type VideoInfoProps = {
   videoInfo: videoInfo | undefined
+  setVideoInfo: Function
   youTubeUrl: string
   libraryFolder: string
   setError: Function
   bitrate: string
 }
 
-const VideoInfo = ({ videoInfo, youTubeUrl, libraryFolder, bitrate, setError }: VideoInfoProps) => {
+const VideoInfo = ({ videoInfo, setVideoInfo, youTubeUrl, libraryFolder, bitrate, setError }: VideoInfoProps) => {
   const [downloadProgress, setDownloadProgress] = useState(0)
   const [conversionProgress, setConversionProgress] = useState(0)
   const [filename, setFilename] = useState(videoInfo?.videoDetails.title || '')
@@ -28,6 +29,7 @@ const VideoInfo = ({ videoInfo, youTubeUrl, libraryFolder, bitrate, setError }: 
 
     if (videoInfo) {
       setError('')
+      setDownloadProgress(1)
       api
         .send(RequestType.Download, {
           youTubeUrl,
@@ -42,7 +44,7 @@ const VideoInfo = ({ videoInfo, youTubeUrl, libraryFolder, bitrate, setError }: 
             genre,
           },
         })
-        .then(() => console.log('Done!!!'))
+        .then(() => setVideoInfo(null))
         .catch(setError)
     }
   }
