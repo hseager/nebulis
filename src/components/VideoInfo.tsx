@@ -34,7 +34,6 @@ const VideoInfo = ({ videoInfo, setVideoInfo, youTubeUrl, libraryFolder, bitrate
         .send(RequestType.Download, {
           youTubeUrl,
           libraryFolder,
-          videoId: videoInfo.videoDetails.videoId,
           bitrate,
           filename,
           metaData: {

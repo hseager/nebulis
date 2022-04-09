@@ -7,6 +7,7 @@ const webpack = require('webpack')
 const srcDir = path.resolve(__dirname, 'src')
 const outputDir = path.resolve(__dirname, 'dist')
 const ffmpegPath = path.join('node_modules', 'ffmpeg-static')
+const ffprobePath = path.join('node_modules', 'ffprobe-static/bin/win32/x64')
 
 const commonConfig = {
   output: {
@@ -52,6 +53,10 @@ module.exports = [
           patterns: [
             {
               from: path.resolve(ffmpegPath, 'ffmpeg.exe'),
+              to: outputDir,
+            },
+            {
+              from: path.resolve(ffprobePath, 'ffprobe.exe'),
               to: outputDir,
             },
           ],

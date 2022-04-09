@@ -37,7 +37,7 @@ const App: React.FC = () => {
           setError={setError}
         />
       )}
-      {page === PageType.Library && <Library />}
+      {page === PageType.Library && <Library libraryFolder={libraryFolder} error={error} setError={setError} />}
       {page === PageType.Preferences && (
         <Preferences
           libraryFolder={libraryFolder}
