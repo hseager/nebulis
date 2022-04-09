@@ -5,6 +5,7 @@
 - Library
 - Add genre tags
 - Styling
+- Adjust start and end times
 - convertSecondstoMintues zero padding bug
 
 # Setup Dev environment
