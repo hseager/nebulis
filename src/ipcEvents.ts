@@ -7,6 +7,7 @@ import fs from 'fs-extra'
 import * as path from 'path'
 import ffmpeg from 'fluent-ffmpeg'
 import ResponseType from './types/ResponseType'
+import Song from './types/Song'
 
 const ffmpegBinaries = path.join(__dirname, 'ffmpeg.exe')
 const ffprobeBinaries = path.join(__dirname, 'ffprobe.exe')
@@ -59,24 +60,45 @@ const initIpcEvents = (win: BrowserWindow) => {
   ipcMain.handle(RequestType.GetLibrary, (event: Event, libraryFolder: string) => {
     return new Promise((resolve, reject) => {
       try {
-        fs.readdir(libraryFolder, (error, files) => {
+        fs.readdir(libraryFolder, async (error, files) => {
           if (error) reject(error)
-          files.forEach((file) => {
-            ffmpeg(path.join(libraryFolder, file))
-              .setFfprobePath(ffprobeBinaries)
-              .ffprobe((error, data) => {
-                if (error) reject(error)
-                console.log(data)
-              })
-          })
 
-          // resolve(files)
+          const songs: Song[] = []
+
+          // for await (const file of files) {
+          //   ffmpeg(path.join(libraryFolder, file))
+          //     .setFfprobePath(ffprobeBinaries)
+          //     .ffprobe((error, data) => {
+          //       if (error) reject(error)
+
+          //       const { title, artist, album } = data.format.tags || {}
+
+          //       const song: Song = {
+          //         filename: 'Test',
+          //         title,
+          //         artist,
+          //         album,
+          //       }
+          //       songs.push(song)
+          //     })
+          // }
+
+          resolve(songs)
         })
       } catch (error) {
         reject(error)
       }
     })
   })
+
+  // const getLibrary = async (files: string[], libraryFolder: string) => {
+  //   return new Promise((resolve, reject) => {
+  //     try {
+  //     } catch (error) {
+  //       reject(error)
+  //     }
+  //   })
+  // }
 
   ipcMain.handle(
     RequestType.Download,

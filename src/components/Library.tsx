@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import RequestType from '../types/RequestType'
+import Song from '../types/Song'
 import Error from './Error'
 
 const { api } = window
@@ -11,10 +12,16 @@ type LibraryProps = {
 }
 
 const Library = ({ libraryFolder, error, setError }: LibraryProps) => {
-  const [library, setLibrary] = useState([])
+  const [library, setLibrary] = useState<Array<Song>>([])
 
   useEffect(() => {
-    api.send(RequestType.GetLibrary, libraryFolder).then(setLibrary).catch(setError)
+    api
+      .send(RequestType.GetLibrary, libraryFolder)
+      .then((songs: Song[]) => {
+        setLibrary(songs)
+        console.log(songs)
+      })
+      .catch(setError)
   }, [])
 
   return (
@@ -27,7 +34,10 @@ const Library = ({ libraryFolder, error, setError }: LibraryProps) => {
             <tbody>
               {library.map((song, i) => (
                 <tr key={i}>
-                  <td>{song}</td>
+                  <td>{song.filename}</td>
+                  <td>{song.title}</td>
+                  <td>{song.artist}</td>
+                  <td>{song.album}</td>
                 </tr>
               ))}
             </tbody>
