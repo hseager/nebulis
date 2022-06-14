@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import LocalStorageKey from '../types/LocalStorageKey'
 import RequestType from '../types/RequestType'
 

@@ -8,6 +8,7 @@ import Preference from '../types/Preference'
 import { videoInfo } from 'ytdl-core'
 import Toolbar from './Toolbar'
 import Preferences from './Preferences'
+import Library from './Library'
 
 const { api } = window
 
@@ -29,6 +30,7 @@ const App: React.FC = () => {
       {error && <Error error={error} />}
       <SearchBar youTubeUrl={youTubeUrl} setYouTubeUrl={setYouTubeUrl} setVideoInfo={setVideoInfo} setError={setError} />
       {videoInfo && <VideoInfo videoInfo={videoInfo} setVideoInfo={setVideoInfo} youTubeUrl={youTubeUrl} libraryFolder={libraryFolder} bitrate={bitrate} setError={setError} />}
+      <Library />
     </div>
   )
 }
