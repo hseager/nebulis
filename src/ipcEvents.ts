@@ -6,8 +6,11 @@ import ytdl from 'ytdl-core'
 import fs from 'fs-extra'
 import * as path from 'path'
 import ffmpeg from 'fluent-ffmpeg'
-import binaries from 'ffmpeg-static'
 import ResponseType from './types/ResponseType'
+import Song from './types/Song'
+
+const ffmpegBinaries = path.join(__dirname, 'ffmpeg.exe')
+const ffprobeBinaries = path.join(__dirname, 'ffprobe.exe')
 
 const initIpcEvents = (win: BrowserWindow) => {
   let isRateLimited = false
@@ -54,21 +57,76 @@ const initIpcEvents = (win: BrowserWindow) => {
     })
   })
 
-  ipcMain.handle(RequestType.Download, (event: Event, { youTubeUrl, libraryFolder, videoId, bitrate, filename, metaData }: { youTubeUrl: string; libraryFolder: string; videoId: string; bitrate: string; filename: string; metaData: MetaData }) => {
+  ipcMain.handle(RequestType.GetLibrary, (event: Event, libraryFolder: string) => {
     return new Promise((resolve, reject) => {
       try {
-        downloadMp4Video(youTubeUrl, libraryFolder, videoId, filename)
-          .then((tempMp4Path: any) => convertMp4ToMp3(tempMp4Path, libraryFolder, videoId, bitrate, filename, metaData))
-          .then((tempMp4Path: any) => fs.unlinkSync(tempMp4Path))
-          .then(resolve)
-          .catch(reject)
+        fs.readdir(libraryFolder, async (error, files) => {
+          if (error) reject(error)
+
+          const songs: Song[] = []
+
+          // for await (const file of files) {
+          //   ffmpeg(path.join(libraryFolder, file))
+          //     .setFfprobePath(ffprobeBinaries)
+          //     .ffprobe((error, data) => {
+          //       if (error) reject(error)
+
+          //       const { title, artist, album } = data.format.tags || {}
+
+          //       const song: Song = {
+          //         filename: 'Test',
+          //         title,
+          //         artist,
+          //         album,
+          //       }
+          //       songs.push(song)
+          //     })
+          // }
+
+          resolve(songs)
+        })
       } catch (error) {
         reject(error)
       }
     })
   })
 
-  const downloadMp4Video = (youTubeUrl: string, libraryFolder: string, videoId: string, filename: string) => {
+  // const getLibrary = async (files: string[], libraryFolder: string) => {
+  //   return new Promise((resolve, reject) => {
+  //     try {
+  //     } catch (error) {
+  //       reject(error)
+  //     }
+  //   })
+  // }
+
+  ipcMain.handle(
+    RequestType.Download,
+    (
+      event: Event,
+      {
+        youTubeUrl,
+        libraryFolder,
+        bitrate,
+        filename,
+        metaData,
+      }: { youTubeUrl: string; libraryFolder: string; bitrate: string; filename: string; metaData: MetaData }
+    ) => {
+      return new Promise((resolve, reject) => {
+        try {
+          downloadMp4Video(youTubeUrl, libraryFolder, filename)
+            .then((tempMp4Path: any) => convertMp4ToMp3(tempMp4Path, libraryFolder, bitrate, filename, metaData))
+            .then((tempMp4Path: any) => fs.unlinkSync(tempMp4Path))
+            .then(resolve)
+            .catch(reject)
+        } catch (error) {
+          reject(error)
+        }
+      })
+    }
+  )
+
+  const downloadMp4Video = (youTubeUrl: string, libraryFolder: string, filename: string) => {
     return new Promise((resolve, reject) => {
       try {
         const fullPath = path.join(libraryFolder, `tmp_${filename}.mp4`)
@@ -97,11 +155,11 @@ const initIpcEvents = (win: BrowserWindow) => {
     })
   }
 
-  const convertMp4ToMp3 = (tempMp4Path: string, libraryFolder: string, videoId: string, bitrate: string, filename: string, metaData: MetaData) => {
+  const convertMp4ToMp3 = (tempMp4Path: string, libraryFolder: string, bitrate: string, filename: string, metaData: MetaData) => {
     return new Promise((resolve, reject) => {
       try {
         ffmpeg(tempMp4Path)
-          .setFfmpegPath(binaries)
+          .setFfmpegPath(ffmpegBinaries)
           .format('mp3')
           .audioBitrate(bitrate)
           .on('start', () => {
