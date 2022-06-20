@@ -1,4 +1,5 @@
 import { app, BrowserWindow, dialog, ipcMain } from 'electron'
+import 'regenerator-runtime/runtime'
 import Preference from './types/Preference'
 import RequestType from './types/RequestType'
 import MetaData from './types/MetaData'
@@ -63,27 +64,9 @@ const initIpcEvents = (win: BrowserWindow) => {
         fs.readdir(libraryFolder, async (error, files) => {
           if (error) reject(error)
 
-          const songs: Song[] = []
+          const library = await getLibrary(files, libraryFolder)
 
-          // for await (const file of files) {
-          //   ffmpeg(path.join(libraryFolder, file))
-          //     .setFfprobePath(ffprobeBinaries)
-          //     .ffprobe((error, data) => {
-          //       if (error) reject(error)
-
-          //       const { title, artist, album } = data.format.tags || {}
-
-          //       const song: Song = {
-          //         filename: 'Test',
-          //         title,
-          //         artist,
-          //         album,
-          //       }
-          //       songs.push(song)
-          //     })
-          // }
-
-          resolve(songs)
+          resolve(library)
         })
       } catch (error) {
         reject(error)
@@ -91,14 +74,42 @@ const initIpcEvents = (win: BrowserWindow) => {
     })
   })
 
-  // const getLibrary = async (files: string[], libraryFolder: string) => {
-  //   return new Promise((resolve, reject) => {
-  //     try {
-  //     } catch (error) {
-  //       reject(error)
-  //     }
-  //   })
-  // }
+  const getLibrary = async (files: string[], libraryFolder: string) => {
+    const songs: Song[] = []
+
+    for await (const filename of files) {
+      const filePath = path.join(libraryFolder, filename)
+      const song: Song = await getSongInfo(filePath, filename)
+      songs.push(song)
+    }
+
+    return songs
+  }
+
+  const getSongInfo = (filePath: string, filename: string): Promise<Song> => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        ffmpeg(filePath)
+          .setFfprobePath(ffprobeBinaries)
+          .ffprobe((error, data) => {
+            if (error) reject(error)
+
+            const { title, artist, album } = data.format.tags || {}
+
+            const song: Song = {
+              filename,
+              title,
+              artist,
+              album,
+            }
+
+            resolve(song)
+          })
+      } catch (error) {
+        reject(error)
+      }
+    })
+  }
 
   ipcMain.handle(
     RequestType.Download,

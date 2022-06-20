@@ -19,7 +19,6 @@ const Library = ({ libraryFolder, error, setError }: LibraryProps) => {
       .send(RequestType.GetLibrary, libraryFolder)
       .then((songs: Song[]) => {
         setLibrary(songs)
-        console.log(songs)
       })
       .catch(setError)
   }, [])
@@ -29,15 +28,24 @@ const Library = ({ libraryFolder, error, setError }: LibraryProps) => {
       {error && <Error error={error} />}
       <div className="bg-slate-800 p-4 mb-8">
         <h2>Library</h2>
-        {library && (
-          <table>
+        {(!library || library.length === 0) && <p>Loading...</p>}
+        {library && library.length > 0 && (
+          <table className="border">
+            <thead>
+              <tr>
+                <th className="border">Filename</th>
+                <th className="border">Title</th>
+                <th className="border">Artist</th>
+                <th className="border">Album</th>
+              </tr>
+            </thead>
             <tbody>
               {library.map((song, i) => (
                 <tr key={i}>
-                  <td>{song.filename}</td>
-                  <td>{song.title}</td>
-                  <td>{song.artist}</td>
-                  <td>{song.album}</td>
+                  <td className="border">{song.filename}</td>
+                  <td className="border">{song.title}</td>
+                  <td className="border">{song.artist}</td>
+                  <td className="border">{song.album}</td>
                 </tr>
               ))}
             </tbody>

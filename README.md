@@ -7,6 +7,9 @@
 - Styling
 - Adjust start and end times
 - convertSecondstoMintues zero padding bug
+- Loading gifs
+- Refactor everything
+- Write unit tests
 
 # Setup Dev environment
 
