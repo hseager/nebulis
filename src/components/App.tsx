@@ -22,7 +22,7 @@ const App: React.FC = () => {
   if (!libraryFolder) api.send(RequestType.GetPreference, Preference.LibraryFolder).then(setLibraryFolder).catch(setError)
 
   return (
-    <div className="max-w-2xl m-auto p-12">
+    <div className="max-w-4xl m-auto p-12">
       <h2 className="mb-8">n e b u l i s</h2>
       <Toolbar setPage={setPage} />
       {page === PageType.Download && (

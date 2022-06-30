@@ -1,6 +1,7 @@
 import React from 'react'
 import LocalStorageKey from '../types/LocalStorageKey'
 import RequestType from '../types/RequestType'
+import { Edit2 as EditIcon } from 'react-feather'
 
 const { api } = window
 
@@ -32,14 +33,22 @@ const Preferences = ({ libraryFolder, setLibraryFolder, bitrate, setBitrate, set
     <div className="bg-slate-800 p-4 mb-8">
       <div className="mb-4">
         <label className="block">Library Folder</label>
-        <input name="directory" type="text" className="w-3/4 bg-slate-200 text-slate-800 px-2 py-1 outline-none" value={libraryFolder} readOnly />
-        <button onClick={() => updateLibraryFolder()} className="bg-indigo-900 px-2 py-1">
-          change
-        </button>
+        <div className="flex items-center">
+          <input
+            name="directory"
+            type="text"
+            className="w-full h-7 bg-slate-200 text-slate-800 px-2 py-1 outline-none"
+            value={libraryFolder}
+            readOnly
+          />
+          <button onClick={() => updateLibraryFolder()} className="h-7 bg-indigo-900 px-2 py-1">
+            <EditIcon size={16} />
+          </button>
+        </div>
       </div>
       <div>
         <label className="block">Bitrate</label>
-        <select value={bitrate} onChange={updateBitrate} className="w-3/4 bg-slate-200 text-slate-800 px-2 py-1 outline-none">
+        <select value={bitrate} onChange={updateBitrate} className="w-full bg-slate-200 text-slate-800 px-2 py-1 outline-none">
           <option value="65">65 kbps (Low Quality)</option>
           <option value="130">130 kbps (Radio Quality)</option>
           <option value="160">160 kbps (CD Quality)</option>

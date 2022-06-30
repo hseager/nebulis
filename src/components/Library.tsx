@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
+import LocalStorageKey from '../types/LocalStorageKey'
 import RequestType from '../types/RequestType'
 import Song from '../types/Song'
 import Error from './Error'
+import { RefreshCw as SyncIcon, Edit2 as EditIcon } from 'react-feather'
 
 const { api } = window
 
@@ -13,43 +15,71 @@ type LibraryProps = {
 
 const Library = ({ libraryFolder, error, setError }: LibraryProps) => {
   const [library, setLibrary] = useState<Array<Song>>([])
+  const [selectedRow, setSelectedRow] = useState<Number>()
 
-  useEffect(() => {
+  const syncLibraryData = () => {
+    setLibrary([])
     api
       .send(RequestType.GetLibrary, libraryFolder)
-      .then((songs: Song[]) => {
-        setLibrary(songs)
+      .then((libraryData: Song[]) => {
+        setLibrary(libraryData)
+        localStorage.setItem(LocalStorageKey.LibraryData, JSON.stringify(libraryData))
       })
       .catch(setError)
+  }
+
+  const handleSelectRow = (row: number) => (selectedRow !== row ? setSelectedRow(row) : setSelectedRow(undefined))
+
+  useEffect(() => {
+    const libraryData = localStorage.getItem(LocalStorageKey.LibraryData)
+    if (libraryData) {
+      setLibrary(JSON.parse(libraryData))
+    } else {
+      syncLibraryData()
+    }
   }, [])
 
   return (
     <>
       {error && <Error error={error} />}
       <div className="bg-slate-800 p-4 mb-8">
-        <h2>Library</h2>
         {(!library || library.length === 0) && <p>Loading...</p>}
         {library && library.length > 0 && (
-          <table className="border">
-            <thead>
-              <tr>
-                <th className="border">Filename</th>
-                <th className="border">Title</th>
-                <th className="border">Artist</th>
-                <th className="border">Album</th>
-              </tr>
-            </thead>
-            <tbody>
-              {library.map((song, i) => (
-                <tr key={i}>
-                  <td className="border">{song.filename}</td>
-                  <td className="border">{song.title}</td>
-                  <td className="border">{song.artist}</td>
-                  <td className="border">{song.album}</td>
+          <>
+            <div className="flex flex-row-reverse mb-4">
+              <span onClick={() => syncLibraryData()} className="cursor-pointer px-2">
+                <SyncIcon size={16} />
+              </span>
+            </div>
+            <table className="border table-fixed w-full">
+              <thead>
+                <tr>
+                  <th className="border p-2">Filename</th>
+                  <th className="border p-2">Title</th>
+                  <th className="border p-2">Artist</th>
+                  <th className="border p-2">Album</th>
+                  <th className="border p-2 w-10"></th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {library.map((song, i) => (
+                  <tr key={i} onClick={() => handleSelectRow(i)}>
+                    <td className="p-2 border">
+                      <span className="block whitespace-nowrap overflow-hidden text-ellipsis">{song.filename}</span>
+                    </td>
+                    <td className="p-2 border">{song.title}</td>
+                    <td className="p-2 border">{song.artist}</td>
+                    <td className="p-2 border">{song.album}</td>
+                    <td className="p-2 border w-10">
+                      <span className="cursor-pointer flex justify-center">
+                        <EditIcon size={16} />
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </>
         )}
       </div>
     </>

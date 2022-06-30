@@ -1,4 +1,5 @@
 enum LocalStorageKey {
+  LibraryData = 'libraryData',
   LibraryFolder = 'libraryFolder',
   Bitrate = 'bitrate',
 }

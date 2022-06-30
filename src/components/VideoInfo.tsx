@@ -3,6 +3,7 @@ import { videoInfo } from 'ytdl-core'
 import RequestType from '../types/RequestType'
 import ResponseType from '../types/ResponseType'
 import { convertSecondstoMintues } from '../utils/DateTime'
+import { DownloadCloud as DownloadIcon } from 'react-feather'
 
 const { api } = window
 
@@ -57,7 +58,6 @@ const VideoInfo = ({ videoInfo, setVideoInfo, youTubeUrl, libraryFolder, bitrate
     <>
       {videoInfo && (
         <div className="bg-slate-800 p-4 mb-8">
-          <h2>Video Info</h2>
           <div className="flex justify-between">
             <ul className="my-4">
               <li>Title: {videoInfo.videoDetails.title}</li>
@@ -67,10 +67,10 @@ const VideoInfo = ({ videoInfo, setVideoInfo, youTubeUrl, libraryFolder, bitrate
             <img src={videoInfo.videoDetails.thumbnails[0].url} />
           </div>
           <form className="my-4 flex flex-wrap">
-            <div className="my-2 basis-1/2">
+            <div className="my-2 basis-1/2 pr-8">
               <label className="block">Filename</label>
               <input
-                className="w-11/12 bg-slate-200 text-slate-800 px-2 py-1 outline-none"
+                className="w-full bg-slate-200 text-slate-800 px-2 py-1 outline-none"
                 type="text"
                 name="filename"
                 value={filename}
@@ -80,17 +80,17 @@ const VideoInfo = ({ videoInfo, setVideoInfo, youTubeUrl, libraryFolder, bitrate
             <div className="my-2 basis-1/2">
               <label className="block">Title</label>
               <input
-                className="w-11/12 bg-slate-200 text-slate-800 px-2 py-1 outline-none"
+                className="w-full bg-slate-200 text-slate-800 px-2 py-1 outline-none"
                 type="text"
                 name="title"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
               />
             </div>
-            <div className="my-2 basis-1/2">
+            <div className="my-2 basis-1/2 pr-8">
               <label className="block">Artist</label>
               <input
-                className="w-11/12 bg-slate-200 text-slate-800 px-2 py-1 outline-none"
+                className="w-full bg-slate-200 text-slate-800 px-2 py-1 outline-none"
                 type="text"
                 name="artist"
                 value={artist}
@@ -100,7 +100,7 @@ const VideoInfo = ({ videoInfo, setVideoInfo, youTubeUrl, libraryFolder, bitrate
             <div className="my-2 basis-1/2">
               <label className="block">Album</label>
               <input
-                className="w-11/12 bg-slate-200 text-slate-800 px-2 py-1 outline-none"
+                className="w-full bg-slate-200 text-slate-800 px-2 py-1 outline-none"
                 type="text"
                 name="album"
                 value={album}
@@ -116,9 +116,11 @@ const VideoInfo = ({ videoInfo, setVideoInfo, youTubeUrl, libraryFolder, bitrate
               </select>
             </div> */}
           </form>
-          <button className="bg-indigo-900 px-2 py-1" onClick={download}>
-            download
-          </button>
+          <div className="flex flex-row-reverse">
+            <button className="bg-indigo-900 px-12 py-2" onClick={download}>
+              <DownloadIcon size={18} />
+            </button>
+          </div>
           <div>
             {downloadProgress > 0 && <p>Downloading: {downloadProgress}%</p>}
             {conversionProgress > 0 && <p>Converting...</p>}
