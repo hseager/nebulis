@@ -32,7 +32,7 @@ const VideoInfo = ({ videoInfo, setVideoInfo, youTubeUrl, libraryFolder, bitrate
       setError('')
       setDownloadProgress(1)
       api
-        .send(RequestType.Download, {
+        .send(RequestType.DownloadVideo, {
           youTubeUrl,
           libraryFolder,
           bitrate,

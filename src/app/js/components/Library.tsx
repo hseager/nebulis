@@ -20,7 +20,7 @@ const Library = ({ libraryFolder, error, setError }: LibraryProps) => {
   const syncLibraryData = () => {
     setLibrary([])
     api
-      .send(RequestType.GetLibrary, libraryFolder)
+      .send(RequestType.GetLibraryData, libraryFolder)
       .then((libraryData: Song[]) => {
         setLibrary(libraryData)
         localStorage.setItem(LocalStorageKey.LibraryData, JSON.stringify(libraryData))

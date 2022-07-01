@@ -9,7 +9,7 @@
 - convertSecondstoMintues zero padding bug
 - Loading gifs
 - Refactor everything
-- Write unit tests
+- Write unit tests (which frameworks? WebDriverIO, mocha, jest? needs to work with typescript, react & electron. How to test multiple OS for ffmpeg?)
 
 # Setup Dev environment
 
