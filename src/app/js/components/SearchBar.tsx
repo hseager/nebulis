@@ -29,7 +29,7 @@ const SearchBar = ({ youTubeUrl, setYouTubeUrl, setVideoInfo, setError }: Contro
         <input
           type="text"
           value={youTubeUrl}
-          className="w-full bg-slate-900 px-4 py-2 outline-none"
+          className="w-full bg-slate-300 text-slate-800 px-4 py-2 outline-none"
           onChange={(event) => setYouTubeUrl(event.target.value)}
         />
         <button className="bg-indigo-700 px-8 h-9" onClick={() => getVideoInfo()}>

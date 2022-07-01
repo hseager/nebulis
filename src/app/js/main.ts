@@ -1,6 +1,6 @@
 import { app, BrowserWindow } from 'electron'
 import path from 'path'
-import initIpcEvents from './ipcEvents'
+import initIpcEvents from './models/ipcEvents'
 
 let win: BrowserWindow
 

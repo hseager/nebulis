@@ -57,7 +57,7 @@ const VideoInfo = ({ videoInfo, setVideoInfo, youTubeUrl, libraryFolder, bitrate
   return (
     <>
       {videoInfo && (
-        <div className="bg-slate-800 p-4 mb-8">
+        <div className="bg-slate-700 p-4 mb-8">
           <div className="flex justify-between">
             <ul className="my-4">
               <li>Title: {videoInfo.videoDetails.title}</li>
@@ -68,9 +68,9 @@ const VideoInfo = ({ videoInfo, setVideoInfo, youTubeUrl, libraryFolder, bitrate
           </div>
           <form className="my-4 flex flex-wrap">
             <div className="my-2 basis-1/2 pr-8">
-              <label className="block">Filename</label>
+              <label className="block text-slate-300 mb-2">Filename</label>
               <input
-                className="w-full bg-slate-200 text-slate-800 px-2 py-1 outline-none"
+                className="w-full bg-slate-300 text-slate-800 px-4 py-2 outline-none"
                 type="text"
                 name="filename"
                 value={filename}
@@ -78,9 +78,9 @@ const VideoInfo = ({ videoInfo, setVideoInfo, youTubeUrl, libraryFolder, bitrate
               />
             </div>
             <div className="my-2 basis-1/2">
-              <label className="block">Title</label>
+              <label className="block text-slate-300 mb-2">Title</label>
               <input
-                className="w-full bg-slate-200 text-slate-800 px-2 py-1 outline-none"
+                className="w-full bg-slate-300 text-slate-800 px-4 py-2 outline-none"
                 type="text"
                 name="title"
                 value={title}
@@ -88,9 +88,9 @@ const VideoInfo = ({ videoInfo, setVideoInfo, youTubeUrl, libraryFolder, bitrate
               />
             </div>
             <div className="my-2 basis-1/2 pr-8">
-              <label className="block">Artist</label>
+              <label className="block text-slate-300 mb-2">Artist</label>
               <input
-                className="w-full bg-slate-200 text-slate-800 px-2 py-1 outline-none"
+                className="w-full bg-slate-300 text-slate-800 px-4 py-2 outline-none"
                 type="text"
                 name="artist"
                 value={artist}
@@ -98,9 +98,9 @@ const VideoInfo = ({ videoInfo, setVideoInfo, youTubeUrl, libraryFolder, bitrate
               />
             </div>
             <div className="my-2 basis-1/2">
-              <label className="block">Album</label>
+              <label className="block text-slate-300 mb-2">Album</label>
               <input
-                className="w-full bg-slate-200 text-slate-800 px-2 py-1 outline-none"
+                className="w-full bg-slate-300 text-slate-800 px-4 py-2 outline-none"
                 type="text"
                 name="album"
                 value={album}
@@ -117,7 +117,7 @@ const VideoInfo = ({ videoInfo, setVideoInfo, youTubeUrl, libraryFolder, bitrate
             </div> */}
           </form>
           <div className="flex flex-row-reverse">
-            <button className="bg-indigo-900 px-12 py-2" onClick={download}>
+            <button className="bg-indigo-700 px-8 h-9" onClick={download}>
               <DownloadIcon size={18} />
             </button>
           </div>

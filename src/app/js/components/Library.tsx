@@ -42,7 +42,7 @@ const Library = ({ libraryFolder, error, setError }: LibraryProps) => {
   return (
     <>
       {error && <Error error={error} />}
-      <div className="bg-slate-800 p-4 mb-8">
+      <div className="bg-slate-700 p-4 mb-8">
         {(!library || library.length === 0) && <p>Loading...</p>}
         {library && library.length > 0 && (
           <>

@@ -41,7 +41,7 @@ module.exports = [
   Object.assign(
     {
       target: 'electron-main',
-      entry: { main: './src/app/main.ts' },
+      entry: { main: './src/app/js/main.ts' },
       node: {
         __dirname: false,
       },
@@ -68,14 +68,14 @@ module.exports = [
   Object.assign(
     {
       target: 'electron-preload',
-      entry: { preload: './src/app/preload.ts' },
+      entry: { preload: './src/app/js/preload.ts' },
     },
     commonConfig
   ),
   Object.assign(
     {
       target: 'electron-renderer',
-      entry: { gui: './src/app/gui.tsx' },
+      entry: { gui: './src/app/js/gui.tsx' },
       plugins: [
         new RemovePlugin({
           before: {

@@ -1,14 +1,14 @@
 import { app, BrowserWindow, dialog, ipcMain } from 'electron'
 import 'regenerator-runtime/runtime'
-import Preference from './types/Preference'
-import RequestType from './types/RequestType'
-import MetaData from './types/MetaData'
+import Preference from '../types/Preference'
+import RequestType from '../types/RequestType'
+import MetaData from '../types/MetaData'
 import ytdl from 'ytdl-core'
 import fs from 'fs-extra'
 import * as path from 'path'
 import ffmpeg from 'fluent-ffmpeg'
-import ResponseType from './types/ResponseType'
-import Song from './types/Song'
+import ResponseType from '../types/ResponseType'
+import Song from '../types/Song'
 
 const ffmpegBinaries = path.join(__dirname, 'ffmpeg.exe')
 const ffprobeBinaries = path.join(__dirname, 'ffprobe.exe')
