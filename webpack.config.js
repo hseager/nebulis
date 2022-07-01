@@ -4,7 +4,7 @@ const RemovePlugin = require('remove-files-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
 const webpack = require('webpack')
 
-const srcDir = path.resolve(__dirname, 'src')
+const srcDir = path.resolve(__dirname, 'src/app')
 const outputDir = path.resolve(__dirname, 'dist')
 const ffmpegPath = path.join('node_modules', 'ffmpeg-static')
 const ffprobePath = path.join('node_modules', 'ffprobe-static/bin/win32/x64')
@@ -41,7 +41,7 @@ module.exports = [
   Object.assign(
     {
       target: 'electron-main',
-      entry: { main: './src/main.ts' },
+      entry: { main: './src/app/main.ts' },
       node: {
         __dirname: false,
       },
@@ -68,14 +68,14 @@ module.exports = [
   Object.assign(
     {
       target: 'electron-preload',
-      entry: { preload: './src/preload.ts' },
+      entry: { preload: './src/app/preload.ts' },
     },
     commonConfig
   ),
   Object.assign(
     {
       target: 'electron-renderer',
-      entry: { gui: './src/gui.tsx' },
+      entry: { gui: './src/app/gui.tsx' },
       plugins: [
         new RemovePlugin({
           before: {
