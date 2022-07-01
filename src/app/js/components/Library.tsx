@@ -55,8 +55,8 @@ const Library = ({ libraryFolder, error, setError }: LibraryProps) => {
               <thead>
                 <tr>
                   <th className="border p-2">Filename</th>
-                  <th className="border p-2">Title</th>
                   <th className="border p-2">Artist</th>
+                  <th className="border p-2">Title</th>
                   <th className="border p-2">Album</th>
                   <th className="border p-2 w-10"></th>
                 </tr>
@@ -67,8 +67,8 @@ const Library = ({ libraryFolder, error, setError }: LibraryProps) => {
                     <td className="p-2 border">
                       <span className="block whitespace-nowrap overflow-hidden text-ellipsis">{song.filename}</span>
                     </td>
-                    <td className="p-2 border">{song.title}</td>
                     <td className="p-2 border">{song.artist}</td>
+                    <td className="p-2 border">{song.title}</td>
                     <td className="p-2 border">{song.album}</td>
                     <td className="p-2 border w-10">
                       <span className="cursor-pointer flex justify-center">

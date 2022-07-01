@@ -40,9 +40,12 @@ export class DownloadService {
   private static downloadMp4Video = (win: BrowserWindow, youTubeUrl: string, libraryFolder: string, filename: string) => {
     return new Promise((resolve, reject) => {
       try {
-        const fullPath = path.join(libraryFolder, `tmp_${filename}.mp4`)
+        const tempFolder = path.join(libraryFolder, '/temp')
+        const fullPath = path.join(tempFolder, `tmp_${filename}.mp4`)
         const videoDownload = ytdl(youTubeUrl, { filter: 'audioonly' })
         let progressTimeout: ReturnType<typeof setTimeout>
+
+        if (!fs.existsSync(tempFolder)) fs.mkdirSync(tempFolder)
 
         videoDownload.on('progress', (chunkLength, downloaded, total) => {
           if (!this.isRateLimited) {
