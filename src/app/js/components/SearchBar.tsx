@@ -1,6 +1,7 @@
 import React from 'react'
 import { videoInfo } from 'ytdl-core'
 import RequestType from '../types/RequestType'
+import Status from '../types/Status'
 import { Search as SearchIcon } from 'react-feather'
 
 const { api } = window
@@ -10,10 +11,12 @@ type ControlProps = {
   setYouTubeUrl: Function
   setVideoInfo: Function
   setError: Function
+  setStatus: Function
 }
 
-const SearchBar = ({ youTubeUrl, setYouTubeUrl, setVideoInfo, setError }: ControlProps) => {
-  const getVideoInfo = () =>
+const SearchBar = ({ youTubeUrl, setYouTubeUrl, setVideoInfo, setError, setStatus }: ControlProps) => {
+  const getVideoInfo = () => {
+    setStatus(Status.GettingVideoInfo)
     api
       .send(RequestType.GetVideoInfo, youTubeUrl)
       .then((videoInfo: videoInfo) => {
@@ -21,9 +24,11 @@ const SearchBar = ({ youTubeUrl, setYouTubeUrl, setVideoInfo, setError }: Contro
         setVideoInfo(videoInfo)
       })
       .catch(setError)
+      .finally(() => setStatus(Status.Ready))
+  }
 
   return (
-    <div className="bg-slate-700 p-4 mb-4">
+    <div className="bg-slate-700 p-4">
       <label className="block text-slate-300 mb-2">YouTube URL or video ID</label>
       <div className="flex items-center">
         <input

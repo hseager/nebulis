@@ -6,6 +6,7 @@ import { videoInfo } from 'ytdl-core'
 import Toolbar from './Toolbar'
 import Preferences from './Preferences'
 import PageType from '../types/PageType'
+import Status from '../types/Status'
 import Download from './Download'
 import Library from './Library'
 
@@ -18,6 +19,7 @@ const App: React.FC = () => {
   const [error, setError] = useState()
   const [bitrate, setBitrate] = useState(localStorage.getItem(LocalStorageKey.Bitrate) || '160')
   const [page, setPage] = useState(PageType.Download)
+  const [status, setStatus] = useState<Status>(Status.Ready)
 
   if (!libraryFolder) api.send(RequestType.GetPreference, Preference.LibraryFolder).then(setLibraryFolder).catch(setError)
 
@@ -35,6 +37,8 @@ const App: React.FC = () => {
           bitrate={bitrate}
           error={error}
           setError={setError}
+          status={status}
+          setStatus={setStatus}
         />
       )}
       {page === PageType.Library && <Library libraryFolder={libraryFolder} error={error} setError={setError} />}

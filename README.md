@@ -2,14 +2,17 @@
 
 # To do
 
-- Library
+- Edit track meta data
 - Add genre tags
 - Styling
 - Adjust start and end times
-- convertSecondstoMintues zero padding bug
 - Loading gifs
-- Refactor everything
 - Write unit tests (which frameworks? WebDriverIO, mocha, jest? needs to work with typescript, react & electron. How to test multiple OS for ffmpeg?)
+- Bug when there's a special character in name "Nu:tone"
+
+## Bugs
+
+- convertSecondstoMintues zero padding bug
 
 # Setup Dev environment
 

@@ -8,9 +8,9 @@ import DownloadVideoRequest from '../types/DownloadVideoRequest'
 import MetaData from '../types/MetaData'
 
 export class DownloadService {
-  static ffmpegBinaries = path.join(__dirname, 'ffmpeg.exe')
-  static isRateLimited = false
-  static rateLimitAmount = 300
+  private static ffmpegBinaries = path.join(__dirname, 'ffmpeg.exe')
+  private static isRateLimited = false
+  private static rateLimitAmount = 50
 
   static getVideoInfo = (youTubeUrl: string) => {
     return new Promise((resolve, reject) => {
@@ -79,23 +79,18 @@ export class DownloadService {
   ) => {
     return new Promise((resolve, reject) => {
       try {
+        const { title, artist, album } = metaData
         ffmpeg(tempMp4Path)
           .setFfmpegPath(this.ffmpegBinaries)
           .format('mp3')
           .audioBitrate(bitrate)
-          .on('start', () => {
-            win.webContents.send(ResponseType.ConversionProgress, true)
-          })
-          .outputOptions('-metadata', `title=${metaData.title}`)
-          .outputOptions('-metadata', `artist=${metaData.artist}`)
-          .outputOptions('-metadata', `album=${metaData.album}`)
-          .outputOptions('-metadata', `genre=${metaData.genre[0]}`)
+          .on('progress', (progress) => win.webContents.send(ResponseType.ConversionProgress, Math.floor(progress.percent)))
+          .outputOptions('-metadata', `title=${title}`)
+          .outputOptions('-metadata', `artist=${artist}`)
+          .outputOptions('-metadata', `album=${album}`)
+          // .outputOptions('-metadata', `genre=${metaData.genre[0]}`)
           .output(fs.createWriteStream(path.join(libraryFolder, `${filename}.mp3`)))
-          .on('end', () => {
-            win.webContents.send(ResponseType.ConversionProgress, false)
-            win.webContents.send(ResponseType.DownloadProgress, 0)
-            resolve(tempMp4Path)
-          })
+          .on('end', () => resolve(tempMp4Path))
           .run()
       } catch (error) {
         reject(error)

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { videoInfo } from 'ytdl-core'
 import RequestType from '../types/RequestType'
-import ResponseType from '../types/ResponseType'
 import { convertSecondstoMintues } from '../utils/DateTime'
 import { DownloadCloud as DownloadIcon } from 'react-feather'
+import Status from '../types/Status'
 
 const { api } = window
 
@@ -14,11 +14,10 @@ type VideoInfoProps = {
   libraryFolder: string
   setError: Function
   bitrate: string
+  setStatus: Function
 }
 
-const VideoInfo = ({ videoInfo, setVideoInfo, youTubeUrl, libraryFolder, bitrate, setError }: VideoInfoProps) => {
-  const [downloadProgress, setDownloadProgress] = useState(0)
-  const [conversionProgress, setConversionProgress] = useState(0)
+const VideoInfo = ({ videoInfo, setVideoInfo, youTubeUrl, libraryFolder, bitrate, setError, setStatus }: VideoInfoProps) => {
   const [filename, setFilename] = useState(videoInfo?.videoDetails.title || '')
   const [title, setTitle] = useState('')
   const [artist, setArtist] = useState('')
@@ -30,7 +29,7 @@ const VideoInfo = ({ videoInfo, setVideoInfo, youTubeUrl, libraryFolder, bitrate
 
     if (videoInfo) {
       setError('')
-      setDownloadProgress(1)
+      setStatus(Status.Downloading)
       api
         .send(RequestType.DownloadVideo, {
           youTubeUrl,
@@ -44,20 +43,16 @@ const VideoInfo = ({ videoInfo, setVideoInfo, youTubeUrl, libraryFolder, bitrate
             genre,
           },
         })
-        .then(() => setVideoInfo(null))
+        .then(() => setVideoInfo(undefined))
         .catch(setError)
+        .finally(() => setStatus(Status.Ready))
     }
   }
-
-  useEffect(() => {
-    api.receive(ResponseType.DownloadProgress, (progress: any) => setDownloadProgress(progress))
-    api.receive(ResponseType.ConversionProgress, (progress: any) => setConversionProgress(progress))
-  }, [])
 
   return (
     <>
       {videoInfo && (
-        <div className="bg-slate-700 p-4 mb-8">
+        <div className="bg-slate-700 p-4 mt-8">
           <div className="flex justify-between">
             <ul className="my-4">
               <li>Title: {videoInfo.videoDetails.title}</li>
@@ -120,10 +115,6 @@ const VideoInfo = ({ videoInfo, setVideoInfo, youTubeUrl, libraryFolder, bitrate
             <button className="bg-indigo-700 px-8 h-9" onClick={download}>
               <DownloadIcon size={18} />
             </button>
-          </div>
-          <div>
-            {downloadProgress > 0 && <p>Downloading: {downloadProgress}%</p>}
-            {conversionProgress > 0 && <p>Converting...</p>}
           </div>
         </div>
       )}
