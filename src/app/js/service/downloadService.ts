@@ -79,7 +79,7 @@ export class DownloadService {
   ) => {
     return new Promise((resolve, reject) => {
       try {
-        const { title, artist, album } = metaData
+        const { title, artist, album, albumArtist } = metaData
         ffmpeg(tempMp4Path)
           .setFfmpegPath(this.ffmpegBinaries)
           .format('mp3')
@@ -88,6 +88,7 @@ export class DownloadService {
           .outputOptions('-metadata', `title=${title}`)
           .outputOptions('-metadata', `artist=${artist}`)
           .outputOptions('-metadata', `album=${album}`)
+          .outputOptions('-metadata', `albumartist=${albumArtist}`)
           // .outputOptions('-metadata', `genre=${metaData.genre[0]}`)
           .output(fs.createWriteStream(path.join(libraryFolder, `${filename}.mp3`)))
           .on('end', () => resolve(tempMp4Path))

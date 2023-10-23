@@ -7,7 +7,8 @@ type ErrorProps = {
 const Error = ({ error }: ErrorProps) => {
   return (
     <div className="p-4 bg-pink-800">
-      <h2>{error.message}</h2>
+      <h2 className="text-base">There was an error!?</h2>
+      <p>{error.message}</p>
     </div>
   )
 }
