@@ -11,6 +11,8 @@ type FileInfoProps = {
   setAlbum: Dispatch<SetStateAction<string>>
   albumArtist: string
   setAlbumArtist: Dispatch<SetStateAction<string>>
+  genre: string
+  setGenre: Dispatch<SetStateAction<string>>
 }
 
 const FileInfo = ({
@@ -24,6 +26,8 @@ const FileInfo = ({
   setAlbum,
   albumArtist,
   setAlbumArtist,
+  genre,
+  setGenre,
 }: FileInfoProps) => {
   return (
     <form className="flex flex-wrap">
@@ -72,19 +76,21 @@ const FileInfo = ({
         <input
           className="w-full bg-slate-300 text-slate-800 px-4 py-2 outline-none"
           type="text"
-          name="album"
+          name="albumArtist"
           value={albumArtist}
           onChange={(e) => setAlbumArtist(e.target.value)}
         />
       </div>
-      {/* <div className="my-2 basis-1/2">
-      <label className="block">Genre</label>
-      <select value={genre} onChange={(e) => setGenre([...genre, e.target.value])} className="w-11/12 bg-slate-200 text-slate-800 px-2 py-1 outline-none">
-        <option value="rock">Rock</option>
-        <option value="drum-and-bass">Drum &amp; Bass</option>
-        <option value="grime">Grime</option>
-      </select>
-    </div> */}
+      <div className="my-2 basis-1/2">
+        <label className="block text-slate-300 mb-2">Genre</label>
+        <input
+          className="w-full bg-slate-300 text-slate-800 px-4 py-2 outline-none"
+          type="text"
+          name="genre"
+          value={genre}
+          onChange={(e) => setGenre(e.target.value)}
+        />
+      </div>
     </form>
   )
 }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { videoInfo } from 'ytdl-core'
+import { videoInfo } from '@distube/ytdl-core'
 import RequestType from '../types/RequestType'
 import { convertSecondstoMintues } from '../utils/DateTime'
 import { DownloadCloud as DownloadIcon } from 'react-feather'
@@ -24,7 +24,7 @@ const VideoInfo = ({ videoInfo, setVideoInfo, youTubeUrl, libraryFolder, bitrate
   const [artist, setArtist] = useState('')
   const [album, setAlbum] = useState('')
   const [albumArtist, setAlbumArtist] = useState('')
-  const [genre, setGenre] = useState([''])
+  const [genre, setGenre] = useState('')
 
   const download = () => {
     if (!filename) return setError(new Error('Please enter a filename'))
@@ -84,6 +84,8 @@ const VideoInfo = ({ videoInfo, setVideoInfo, youTubeUrl, libraryFolder, bitrate
               setAlbum={setAlbum}
               albumArtist={albumArtist}
               setAlbumArtist={setAlbumArtist}
+              genre={genre}
+              setGenre={setGenre}
             />
             <div className="flex flex-row-reverse">
               <button className="bg-indigo-700 px-8 h-9" onClick={download}>

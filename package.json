@@ -12,6 +12,7 @@
   "author": "hseager",
   "license": "ISC",
   "dependencies": {
+    "@distube/ytdl-core": "^4.13.2",
     "@types/react": "^17.0.38",
     "@types/react-dom": "^17.0.11",
     "ffmpeg-static": "^5.0.0",
@@ -20,8 +21,7 @@
     "fs-extra": "^10.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "regenerator-runtime": "^0.13.9",
-    "ytdl-core": "^4.11.0"
+    "regenerator-runtime": "^0.13.9"
   },
   "devDependencies": {
     "@babel/core": "^7.16.7",
@@ -32,6 +32,7 @@
     "@types/ffprobe-static": "^2.0.1",
     "@types/fluent-ffmpeg": "^2.1.20",
     "@types/fs-extra": "^9.0.13",
+    "@types/tough-cookie": "^4.0.4",
     "autoprefixer": "^10.4.4",
     "babel-loader": "^8.2.3",
     "copy-webpack-plugin": "^10.2.4",

@@ -3,7 +3,7 @@ import SearchBar from './SearchBar'
 import VideoInfo from './VideoInfo'
 import Error from './Error'
 import StatusBar from './StatusBar'
-import { videoInfo } from 'ytdl-core'
+import { videoInfo } from '@distube/ytdl-core'
 import Status from '../types/Status'
 
 type DownloadProps = {

@@ -1,5 +1,5 @@
 import React from 'react'
-import { videoInfo } from 'ytdl-core'
+import { videoInfo } from '@distube/ytdl-core'
 import RequestType from '../types/RequestType'
 import Status from '../types/Status'
 import { Search as SearchIcon } from 'react-feather'
