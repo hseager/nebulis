@@ -14,7 +14,7 @@ const { api } = window
 
 const App: React.FC = () => {
   const [libraryFolder, setLibraryFolder] = useState(localStorage.getItem(LocalStorageKey.LibraryFolder) || '')
-  const [youTubeUrl, setYouTubeUrl] = useState('https://www.youtube.com/watch?v=LwQpWb4y5Fc')
+  const [youTubeUrl, setYouTubeUrl] = useState('https://www.youtube.com/watch?v=LKZfGiK-_7Q')
   const [videoInfo, setVideoInfo] = useState<videoInfo>()
   const [error, setError] = useState()
   const [bitrate, setBitrate] = useState(localStorage.getItem(LocalStorageKey.Bitrate) || '160')

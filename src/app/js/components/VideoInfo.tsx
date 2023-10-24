@@ -5,6 +5,7 @@ import { convertSecondstoMintues } from '../utils/DateTime'
 import { DownloadCloud as DownloadIcon } from 'react-feather'
 import Status from '../types/Status'
 import FileInfo from './FileInfo'
+import { parseVideoArtist, parseVideoTitle } from '../utils/VideoDataParser'
 
 const { api } = window
 
@@ -19,12 +20,23 @@ type VideoInfoProps = {
 }
 
 const VideoInfo = ({ videoInfo, setVideoInfo, youTubeUrl, libraryFolder, bitrate, setError, setStatus }: VideoInfoProps) => {
+  // const { videoTitle } = videoInfo ? videoInfo.videoDetails.title : '';
+
   const [filename, setFilename] = useState(videoInfo?.videoDetails.title || '')
-  const [title, setTitle] = useState('')
-  const [artist, setArtist] = useState('')
+  const [title, setTitle] = useState(videoInfo ? parseVideoTitle(videoInfo?.videoDetails.title) : '')
+  const [artist, setArtist] = useState(videoInfo ? parseVideoArtist(videoInfo?.videoDetails.title) : '')
   const [album, setAlbum] = useState('')
   const [albumArtist, setAlbumArtist] = useState('')
   const [genre, setGenre] = useState('')
+
+  // Need to fix this up
+  useEffect(() => {
+    if (videoInfo) {
+      setFilename(videoInfo.videoDetails.title)
+      setTitle(parseVideoTitle(videoInfo.videoDetails.title))
+      setArtist(parseVideoArtist(videoInfo.videoDetails.title))
+    }
+  }, [videoInfo])
 
   const download = () => {
     if (!filename) return setError(new Error('Please enter a filename'))
