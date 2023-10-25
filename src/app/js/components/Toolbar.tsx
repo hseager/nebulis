@@ -14,9 +14,6 @@ const Toolbar = ({ setPage }: ToolBarPreferences) => {
       <span onClick={() => setPage(PageType.Preferences)} className="cursor-pointer p-2">
         <PreferencesIcon size={16} />
       </span>
-      {/* <span onClick={() => setPage(PageType.Library)} className="cursor-pointer p-2">
-        <ListIcon size={16} />
-      </span> */}
       <span onClick={() => setPage(PageType.Download)} className="cursor-pointer p-2">
         <DownloadIcon size={16} />
       </span>

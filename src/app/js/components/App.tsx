@@ -3,7 +3,6 @@ import { videoInfo } from '@distube/ytdl-core'
 import Toolbar from './Toolbar'
 import PreferencesPage from './PreferencesPage'
 import DownloadPage from './DownloadPage'
-import Library from './Library'
 import { LocalStorageKey, PageType, Preference, RequestType, Status } from '../types/types'
 
 const { api } = window
@@ -47,7 +46,6 @@ const App: React.FC = () => {
           splitArtistTitleChars={splitArtistTitleChars}
         />
       )}
-      {page === PageType.Library && <Library libraryFolder={libraryFolder} error={error} setError={setError} />}
       {page === PageType.Preferences && (
         <PreferencesPage
           libraryFolder={libraryFolder}

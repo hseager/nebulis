@@ -22,7 +22,6 @@ export enum RequestType {
   GetPreference = 'get-preference-request',
   GetVideoInfo = 'get-video-info-request',
   DownloadVideo = 'download-video-request',
-  GetLibraryData = 'get-library-data',
 }
 
 export enum Preference {
@@ -31,7 +30,6 @@ export enum Preference {
 
 export enum PageType {
   Download = 'download',
-  Library = 'library',
   Preferences = 'preferences',
 }
 
@@ -46,7 +44,6 @@ export type MetaData = {
 export type DownloadVideoRequest = { youTubeUrl: string; libraryFolder: string; bitrate: string; filename: string; metaData: MetaData }
 
 export enum LocalStorageKey {
-  LibraryData = 'libraryData',
   LibraryFolder = 'libraryFolder',
   Bitrate = 'bitrate',
   SplitArtistTitleChars = 'splitArtistTitleChars',
