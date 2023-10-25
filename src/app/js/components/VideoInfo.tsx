@@ -38,11 +38,14 @@ const VideoInfo = ({
   const [albumArtist, setAlbumArtist] = useState('')
   const [genre, setGenre] = useState('')
   const [trackNumber, setTrackNumber] = useState('')
+  const [preserveMetadata, setPreserveMetadata] = useState(false)
 
   useEffect(() => {
-    setFilename(videoTitle)
-    setTitle(parseVideoTitle(splitArtistTitleChars, videoTitle))
-    setArtist(parseVideoArtist(splitArtistTitleChars, videoTitle))
+    if (!preserveMetadata) {
+      setFilename(videoTitle)
+      setTitle(parseVideoTitle(splitArtistTitleChars, videoTitle))
+      setArtist(parseVideoArtist(splitArtistTitleChars, videoTitle))
+    }
   }, [videoInfo])
 
   const download = () => {
@@ -68,7 +71,9 @@ const VideoInfo = ({
 
     api
       .send(RequestType.DownloadVideo, downloadRequestData)
-      .then(() => setVideoInfo(undefined))
+      .then(() => {
+        if (!preserveMetadata) setVideoInfo(undefined)
+      })
       .catch((error) => setError(error))
       .finally(() => setStatus(Status.Ready))
   }
@@ -114,7 +119,18 @@ const VideoInfo = ({
           trackNumber={trackNumber}
           setTrackNumber={setTrackNumber}
         />
-        <div className="flex flex-row-reverse mt-2">
+        <div className="flex justify-between items-center mt-2">
+          <div className="flex items-center">
+            <label htmlFor="preserve-metadata">Preserve metadata</label>
+            <input
+              type="checkbox"
+              id="preserve-metadata"
+              name="preserve-metadata"
+              className="ml-2"
+              checked={preserveMetadata}
+              onChange={(e) => setPreserveMetadata(!!e.target.checked)}
+            />
+          </div>
           <button className="bg-indigo-700 px-8 h-9" onClick={download}>
             <DownloadIcon size={18} />
           </button>
