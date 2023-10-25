@@ -13,13 +13,22 @@ import Library from './Library'
 const { api } = window
 
 const App: React.FC = () => {
+  const defaults = {
+    youtubeUrl: 'https://www.youtube.com/watch?v=LKZfGiK-_7Q',
+    bitrate: '160',
+    splitArtistTitleChars: '-~',
+  }
+
   const [libraryFolder, setLibraryFolder] = useState(localStorage.getItem(LocalStorageKey.LibraryFolder) || '')
-  const [youTubeUrl, setYouTubeUrl] = useState('https://www.youtube.com/watch?v=LKZfGiK-_7Q')
+  const [youTubeUrl, setYouTubeUrl] = useState(defaults.youtubeUrl)
   const [videoInfo, setVideoInfo] = useState<videoInfo>()
-  const [error, setError] = useState()
-  const [bitrate, setBitrate] = useState(localStorage.getItem(LocalStorageKey.Bitrate) || '160')
+  const [error, setError] = useState<Error>()
+  const [bitrate, setBitrate] = useState(localStorage.getItem(LocalStorageKey.Bitrate) || defaults.bitrate)
   const [page, setPage] = useState(PageType.Download)
   const [status, setStatus] = useState<Status>(Status.Ready)
+  const [splitArtistTitleChars, setSplitArtistTitleChars] = useState(
+    localStorage.getItem(LocalStorageKey.SplitArtistTitleChars) || defaults.splitArtistTitleChars
+  )
 
   if (!libraryFolder) api.send(RequestType.GetPreference, Preference.LibraryFolder).then(setLibraryFolder).catch(setError)
 
@@ -39,6 +48,7 @@ const App: React.FC = () => {
           setError={setError}
           status={status}
           setStatus={setStatus}
+          splitArtistTitleChars={splitArtistTitleChars}
         />
       )}
       {page === PageType.Library && <Library libraryFolder={libraryFolder} error={error} setError={setError} />}
@@ -49,6 +59,8 @@ const App: React.FC = () => {
           bitrate={bitrate}
           setBitrate={setBitrate}
           setError={setError}
+          splitArtistTitleChars={splitArtistTitleChars}
+          setSplitArtistTitleChars={setSplitArtistTitleChars}
         />
       )}
     </div>

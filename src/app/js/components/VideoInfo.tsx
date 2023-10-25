@@ -17,24 +17,33 @@ type VideoInfoProps = {
   setError: Function
   bitrate: string
   setStatus: Function
+  splitArtistTitleChars: string
 }
 
-const VideoInfo = ({ videoInfo, setVideoInfo, youTubeUrl, libraryFolder, bitrate, setError, setStatus }: VideoInfoProps) => {
-  // const { videoTitle } = videoInfo ? videoInfo.videoDetails.title : '';
+const VideoInfo = ({
+  videoInfo,
+  setVideoInfo,
+  youTubeUrl,
+  libraryFolder,
+  bitrate,
+  setError,
+  setStatus,
+  splitArtistTitleChars,
+}: VideoInfoProps) => {
+  const videoTitle = videoInfo?.videoDetails.title || ''
 
-  const [filename, setFilename] = useState(videoInfo?.videoDetails.title || '')
-  const [title, setTitle] = useState(videoInfo ? parseVideoTitle(videoInfo?.videoDetails.title) : '')
-  const [artist, setArtist] = useState(videoInfo ? parseVideoArtist(videoInfo?.videoDetails.title) : '')
+  const [filename, setFilename] = useState(videoTitle)
+  const [title, setTitle] = useState(videoInfo ? parseVideoTitle(splitArtistTitleChars, videoTitle) : '')
+  const [artist, setArtist] = useState(videoInfo ? parseVideoArtist(splitArtistTitleChars, videoTitle) : '')
   const [album, setAlbum] = useState('')
   const [albumArtist, setAlbumArtist] = useState('')
   const [genre, setGenre] = useState('')
 
-  // Need to fix this up
   useEffect(() => {
     if (videoInfo) {
-      setFilename(videoInfo.videoDetails.title)
-      setTitle(parseVideoTitle(videoInfo.videoDetails.title))
-      setArtist(parseVideoArtist(videoInfo.videoDetails.title))
+      setFilename(videoTitle)
+      setTitle(parseVideoTitle(splitArtistTitleChars, videoTitle))
+      setArtist(parseVideoArtist(splitArtistTitleChars, videoTitle))
     }
   }, [videoInfo])
 
@@ -72,7 +81,7 @@ const VideoInfo = ({ videoInfo, setVideoInfo, youTubeUrl, libraryFolder, bitrate
             <div className="flex justify-between">
               <ul className="my-2 text-base">
                 <li className="mb-2">
-                  <strong>Title:</strong> {videoInfo.videoDetails.title}
+                  <strong>Title:</strong> {videoTitle}
                 </li>
                 <li className="mb-2">
                   <strong>Author:</strong> {videoInfo.videoDetails.author.name}
@@ -99,7 +108,7 @@ const VideoInfo = ({ videoInfo, setVideoInfo, youTubeUrl, libraryFolder, bitrate
               genre={genre}
               setGenre={setGenre}
             />
-            <div className="flex flex-row-reverse">
+            <div className="flex flex-row-reverse mt-2">
               <button className="bg-indigo-700 px-8 h-9" onClick={download}>
                 <DownloadIcon size={18} />
               </button>

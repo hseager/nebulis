@@ -17,6 +17,7 @@ type DownloadProps = {
   setError: Function
   status: Status
   setStatus: Function
+  splitArtistTitleChars: string
 }
 
 const Download = ({
@@ -30,6 +31,7 @@ const Download = ({
   setError,
   status,
   setStatus,
+  splitArtistTitleChars,
 }: DownloadProps) => {
   return (
     <>
@@ -51,6 +53,7 @@ const Download = ({
           bitrate={bitrate}
           setError={setError}
           setStatus={setStatus}
+          splitArtistTitleChars={splitArtistTitleChars}
         />
       )}
     </>

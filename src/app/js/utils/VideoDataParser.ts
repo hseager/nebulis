@@ -1,8 +1,6 @@
-const charsToSplit = ['-', '~']
-
-export const parseVideoTitle = (videoTitle: string) => {
+export const parseVideoTitle = (chars: string, videoTitle: string) => {
   let title = ''
-  charsToSplit.forEach((char) => {
+  chars.split('').forEach((char) => {
     if (videoTitle.indexOf(char) > 0) {
       title = videoTitle.split(char)[1]?.trim()
     }
@@ -10,9 +8,9 @@ export const parseVideoTitle = (videoTitle: string) => {
   return title
 }
 
-export const parseVideoArtist = (videoTitle: string) => {
+export const parseVideoArtist = (chars: string, videoTitle: string) => {
   let artist = ''
-  charsToSplit.forEach((char) => {
+  chars.split('').forEach((char) => {
     if (videoTitle.indexOf(char) > 0) {
       artist = videoTitle.split(char)[0]?.trim()
     }

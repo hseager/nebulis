@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Dispatch, SetStateAction } from 'react'
 import LocalStorageKey from '../types/LocalStorageKey'
 import RequestType from '../types/RequestType'
 import { Edit2 as EditIcon } from 'react-feather'
@@ -7,13 +7,23 @@ const { api } = window
 
 type PreferencesProps = {
   libraryFolder: string
-  setLibraryFolder: Function
+  setLibraryFolder: Dispatch<SetStateAction<string>>
   bitrate: string
-  setBitrate: Function
-  setError: Function
+  setBitrate: Dispatch<SetStateAction<string>>
+  setError: Dispatch<SetStateAction<Error | undefined>>
+  splitArtistTitleChars: string
+  setSplitArtistTitleChars: Dispatch<SetStateAction<string>>
 }
 
-const Preferences = ({ libraryFolder, setLibraryFolder, bitrate, setBitrate, setError }: PreferencesProps) => {
+const Preferences = ({
+  libraryFolder,
+  setLibraryFolder,
+  bitrate,
+  setBitrate,
+  setError,
+  splitArtistTitleChars,
+  setSplitArtistTitleChars,
+}: PreferencesProps) => {
   const updateLibraryFolder = () =>
     api
       .send(RequestType.UpdateLibraryFolder)
@@ -29,6 +39,12 @@ const Preferences = ({ libraryFolder, setLibraryFolder, bitrate, setBitrate, set
     localStorage.setItem(LocalStorageKey.Bitrate, bitrate)
   }
 
+  const updateSplitArtistTitleChars = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const chars = event.target.value
+    setSplitArtistTitleChars(chars)
+    localStorage.setItem(LocalStorageKey.SplitArtistTitleChars, chars)
+  }
+
   return (
     <div className="bg-slate-700 p-4 mb-8">
       <div className="mb-4">
@@ -41,12 +57,12 @@ const Preferences = ({ libraryFolder, setLibraryFolder, bitrate, setBitrate, set
             value={libraryFolder}
             readOnly
           />
-          <button onClick={() => updateLibraryFolder()} className="bg-indigo-700 px-8 h-9">
+          <button onClick={updateLibraryFolder} className="bg-indigo-700 px-8 h-9">
             <EditIcon size={18} />
           </button>
         </div>
       </div>
-      <div>
+      <div className="mb-4">
         <label className="block text-slate-300 mb-2">Bitrate</label>
         <select value={bitrate} onChange={updateBitrate} className="w-full bg-slate-300 text-slate-800 px-4 py-2 outline-none">
           <option value="65">65 kbps (Low Quality)</option>
@@ -55,6 +71,16 @@ const Preferences = ({ libraryFolder, setLibraryFolder, bitrate, setBitrate, set
           <option value="192">192 kbps (High Quality)</option>
           <option value="320">320 kbps (Full Quality)</option>
         </select>
+      </div>
+      <div>
+        <label className="block text-slate-300 mb-2">Split artist/title by characters</label>
+        <input
+          name="split-title-by"
+          type="text"
+          className="w-full bg-slate-300 text-slate-800 px-4 py-2 outline-none"
+          value={splitArtistTitleChars}
+          onChange={updateSplitArtistTitleChars}
+        />
       </div>
     </div>
   )
