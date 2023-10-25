@@ -38,7 +38,8 @@ export type MetaData = {
   artist: string
   album: string
   albumArtist: string
-  genre: Array<string>
+  genre: string
+  trackNumber: string
 }
 
 export type DownloadVideoRequest = { youTubeUrl: string; libraryFolder: string; bitrate: string; filename: string; metaData: MetaData }
