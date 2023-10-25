@@ -1,3 +1,9 @@
+export type API = {
+  send: (channel: RequestType, data?: unknown) => Promise<any>
+  receive: (channel: ResponseType, func: Function) => void
+  cleanup: (channel: ResponseType) => void
+}
+
 export enum Status {
   Ready = 'ready',
   GettingVideoInfo = 'getting-video-info',

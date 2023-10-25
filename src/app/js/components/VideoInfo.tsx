@@ -69,7 +69,7 @@ const VideoInfo = ({
     api
       .send(RequestType.DownloadVideo, downloadRequestData)
       .then(() => setVideoInfo(undefined))
-      .catch(setError)
+      .catch((error) => setError(error))
       .finally(() => setStatus(Status.Ready))
   }
 

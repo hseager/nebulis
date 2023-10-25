@@ -26,6 +26,11 @@ const StatusBar = ({ status, setStatus }: StatusBarProps) => {
   useEffect(() => {
     api.receive(ResponseType.DownloadProgress, (progress: number) => setDownloadProgress(progress))
     api.receive(ResponseType.ConversionProgress, (progress: number) => setConversionProgress(progress))
+
+    return function cleanUp() {
+      api.cleanup(ResponseType.DownloadProgress)
+      api.cleanup(ResponseType.ConversionProgress)
+    }
   }, [])
 
   useEffect(() => {

@@ -22,7 +22,7 @@ const SearchBar = ({ youTubeUrl, setYouTubeUrl, setVideoInfo, setError, setStatu
         setError('')
         setVideoInfo(videoInfo)
       })
-      .catch(setError)
+      .catch((error) => setError(error))
       .finally(() => setStatus(Status.Ready))
   }
 
