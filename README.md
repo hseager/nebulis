@@ -2,6 +2,7 @@
 
 # To do
 
+- Production build .exe
 - Checkboxes in preferences for metadata fields
 - Styling
 - Adjust start and end times
