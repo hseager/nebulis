@@ -1,8 +1,8 @@
 import { BrowserWindow, dialog } from 'electron'
 import fs from 'fs-extra'
 import * as path from 'path'
-import Song from '../types/Song'
 import ffmpeg from 'fluent-ffmpeg'
+import { Song } from '../types/types'
 
 export class LibraryService {
   private static ffprobeBinaries = path.join(__dirname, 'ffprobe.exe')

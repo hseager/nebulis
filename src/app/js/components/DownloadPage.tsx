@@ -4,9 +4,9 @@ import VideoInfo from './VideoInfo'
 import Error from './Error'
 import StatusBar from './StatusBar'
 import { videoInfo } from '@distube/ytdl-core'
-import Status from '../types/Status'
+import { Status } from '../types/types'
 
-type DownloadProps = {
+type DownloadPageProps = {
   youTubeUrl: string
   setYouTubeUrl: Function
   videoInfo: videoInfo | undefined
@@ -20,7 +20,7 @@ type DownloadProps = {
   splitArtistTitleChars: string
 }
 
-const Download = ({
+const DownloadPage = ({
   youTubeUrl,
   setYouTubeUrl,
   videoInfo,
@@ -32,7 +32,7 @@ const Download = ({
   status,
   setStatus,
   splitArtistTitleChars,
-}: DownloadProps) => {
+}: DownloadPageProps) => {
   return (
     <>
       {error && <Error error={error} />}
@@ -60,4 +60,4 @@ const Download = ({
   )
 }
 
-export default Download
+export default DownloadPage

@@ -3,9 +3,7 @@ import * as path from 'path'
 import fs from 'fs-extra'
 import { BrowserWindow } from 'electron'
 import ffmpeg from 'fluent-ffmpeg'
-import ResponseType from '../types/ResponseType'
-import DownloadVideoRequest from '../types/DownloadVideoRequest'
-import MetaData from '../types/MetaData'
+import { DownloadVideoRequest, MetaData, ResponseType } from '../types/types'
 
 export class DownloadService {
   private static ffmpegBinaries = path.join(__dirname, 'ffmpeg.exe')

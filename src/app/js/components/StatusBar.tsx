@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import ResponseType from '../types/ResponseType'
-import Status from '../types/Status'
+import { ResponseType, Status } from '../types/types'
 
 const { api } = window
 

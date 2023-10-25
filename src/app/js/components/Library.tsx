@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import LocalStorageKey from '../types/LocalStorageKey'
-import RequestType from '../types/RequestType'
-import Song from '../types/Song'
 import Error from './Error'
 import { RefreshCw as SyncIcon, Edit2 as EditIcon } from 'react-feather'
+import { LocalStorageKey, RequestType, Song } from '../types/types'
 
 const { api } = window
 

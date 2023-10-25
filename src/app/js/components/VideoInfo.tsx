@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { videoInfo } from '@distube/ytdl-core'
-import RequestType from '../types/RequestType'
 import { convertSecondstoMintues } from '../utils/DateTime'
 import { DownloadCloud as DownloadIcon } from 'react-feather'
-import Status from '../types/Status'
 import FileInfo from './FileInfo'
 import { parseVideoArtist, parseVideoTitle } from '../utils/VideoDataParser'
+import { RequestType, Status } from '../types/types'
 
 const { api } = window
 

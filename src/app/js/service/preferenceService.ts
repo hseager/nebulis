@@ -1,5 +1,5 @@
 import { app } from 'electron'
-import Preference from '../types/Preference'
+import { Preference } from '../types/types'
 
 export class PreferenceService {
   static getPreference = (preference: Preference) => {

@@ -1,14 +1,10 @@
 import React, { useState } from 'react'
-import LocalStorageKey from '../types/LocalStorageKey'
-import RequestType from '../types/RequestType'
-import Preference from '../types/Preference'
 import { videoInfo } from '@distube/ytdl-core'
 import Toolbar from './Toolbar'
-import Preferences from './Preferences'
-import PageType from '../types/PageType'
-import Status from '../types/Status'
-import Download from './Download'
+import PreferencesPage from './PreferencesPage'
+import DownloadPage from './DownloadPage'
 import Library from './Library'
+import { LocalStorageKey, PageType, Preference, RequestType, Status } from '../types/types'
 
 const { api } = window
 
@@ -37,7 +33,7 @@ const App: React.FC = () => {
       <h2 className="mb-8">n e b u l i s</h2>
       <Toolbar setPage={setPage} />
       {page === PageType.Download && (
-        <Download
+        <DownloadPage
           youTubeUrl={youTubeUrl}
           setYouTubeUrl={setYouTubeUrl}
           videoInfo={videoInfo}
@@ -53,7 +49,7 @@ const App: React.FC = () => {
       )}
       {page === PageType.Library && <Library libraryFolder={libraryFolder} error={error} setError={setError} />}
       {page === PageType.Preferences && (
-        <Preferences
+        <PreferencesPage
           libraryFolder={libraryFolder}
           setLibraryFolder={setLibraryFolder}
           bitrate={bitrate}

@@ -2,7 +2,7 @@ import React from 'react'
 import { Settings as PreferencesIcon } from 'react-feather'
 import { Download as DownloadIcon } from 'react-feather'
 import { List as ListIcon } from 'react-feather'
-import PageType from '../types/PageType'
+import { PageType } from '../types/types'
 
 type ToolBarPreferences = {
   setPage: Function

@@ -1,11 +1,9 @@
 import { BrowserWindow, ipcMain } from 'electron'
 import 'regenerator-runtime/runtime'
-import Preference from '../types/Preference'
-import RequestType from '../types/RequestType'
 import { LibraryService } from './libraryService'
 import { PreferenceService } from './preferenceService'
 import { DownloadService } from './downloadService'
-import DownloadVideoRequest from '../types/DownloadVideoRequest'
+import { DownloadVideoRequest, Preference, RequestType } from '../types/types'
 
 const initIpcEvents = (win: BrowserWindow) => {
   // Library

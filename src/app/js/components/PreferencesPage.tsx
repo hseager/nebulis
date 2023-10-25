@@ -1,11 +1,10 @@
 import React, { Dispatch, SetStateAction } from 'react'
-import LocalStorageKey from '../types/LocalStorageKey'
-import RequestType from '../types/RequestType'
 import { Edit2 as EditIcon } from 'react-feather'
+import { LocalStorageKey, RequestType } from '../types/types'
 
 const { api } = window
 
-type PreferencesProps = {
+type PreferencesPageProps = {
   libraryFolder: string
   setLibraryFolder: Dispatch<SetStateAction<string>>
   bitrate: string
@@ -15,7 +14,7 @@ type PreferencesProps = {
   setSplitArtistTitleChars: Dispatch<SetStateAction<string>>
 }
 
-const Preferences = ({
+const PreferencesPage = ({
   libraryFolder,
   setLibraryFolder,
   bitrate,
@@ -23,7 +22,7 @@ const Preferences = ({
   setError,
   splitArtistTitleChars,
   setSplitArtistTitleChars,
-}: PreferencesProps) => {
+}: PreferencesPageProps) => {
   const updateLibraryFolder = () =>
     api
       .send(RequestType.UpdateLibraryFolder)
@@ -86,4 +85,4 @@ const Preferences = ({
   )
 }
 
-export default Preferences
+export default PreferencesPage

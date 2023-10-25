@@ -1,6 +1,5 @@
 import { contextBridge, ipcRenderer } from 'electron'
-import RequestType from './types/RequestType'
-import ResponseType from './types/ResponseType'
+import { RequestType, ResponseType } from './types/types'
 
 contextBridge.exposeInMainWorld('api', {
   send: (channel: RequestType, data: any) => {
