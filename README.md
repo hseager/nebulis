@@ -2,20 +2,14 @@
 
 # To do
 
-- Edit track meta data
 - Checkboxes in preferences for metadata fields
-- Add genre tags
 - Styling
 - Adjust start and end times
-- Loading gifs
 - Write unit tests (which frameworks? WebDriverIO, mocha, jest? needs to work with typescript, react & electron. How to test multiple OS for ffmpeg?)
 
 ## Bugs
 
 - Bug when there's a special character in name "Nu:tone"
-
-## Bugs
-
 - convertSecondstoMintues zero padding bug
 
 # Setup Dev environment
