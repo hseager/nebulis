@@ -5,6 +5,7 @@
   "main": "dist/main.js",
   "scripts": {
     "build": "webpack --mode production",
+    "package": "npx electron-packager ./ --out /package",
     "watch": "webpack --watch --mode development",
     "start": "electron ."
   },
@@ -37,6 +38,7 @@
     "copy-webpack-plugin": "^10.2.4",
     "css-loader": "^6.7.1",
     "electron": "^17.1.2",
+    "electron-packager": "^17.1.2",
     "html-webpack-plugin": "^5.5.0",
     "postcss": "^8.4.12",
     "postcss-loader": "^6.2.1",

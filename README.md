@@ -1,6 +1,6 @@
 ### n e b u l i s
 
-Desktop app to download YouTube MP3s with MetaData editing
+Windows app to download YouTube MP3s with MetaData editing
 
 ![screenshot](screenshots/image1.webp)
 
