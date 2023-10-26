@@ -2,8 +2,9 @@
 
 Desktop app to download YouTube MP3s with MetaData editing
 
-![screenshot](screenshot/image1.jpg)
-![screenshot](screenshot/image2.jpg)
+![screenshot](screenshots/image1.webp)
+
+![screenshot](screenshots/image2.webp)
 
 ## To do
 
