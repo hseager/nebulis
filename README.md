@@ -8,7 +8,6 @@ Windows app to download YouTube videos as MP3s with metadata editing
 
 ## To do
 
-- Production build .exe
 - Checkboxes in preferences for metadata fields
 - Adjust start and end times
 - Write unit tests (which frameworks? WebDriverIO, mocha, jest? needs to work with typescript, react & electron. How to test multiple OS for ffmpeg?)
