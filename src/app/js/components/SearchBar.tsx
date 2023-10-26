@@ -35,7 +35,7 @@ const SearchBar = ({ youTubeUrl, setYouTubeUrl, setVideoInfo, setError, setStatu
           value={youTubeUrl}
           className="w-full bg-slate-300 text-slate-800 px-4 py-2 outline-none"
           onChange={(event) => setYouTubeUrl(event.target.value)}
-          placeholder="https://www.youtube.com/watch?v=LKZfGiK-_7Q"
+          placeholder="https://www.youtube.com/watch?v=RQDVgBFAA3E"
         />
         <button className="bg-indigo-700 px-8 h-9" onClick={() => getVideoInfo()}>
           <SearchIcon size={18} />

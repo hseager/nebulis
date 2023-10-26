@@ -9,13 +9,12 @@ const { api } = window
 
 const App: React.FC = () => {
   const defaults = {
-    youtubeUrl: 'https://www.youtube.com/watch?v=LKZfGiK-_7Q',
     bitrate: '160',
     splitArtistTitleChars: '-~',
   }
 
   const [libraryFolder, setLibraryFolder] = useState(localStorage.getItem(LocalStorageKey.LibraryFolder) || '')
-  const [youTubeUrl, setYouTubeUrl] = useState(defaults.youtubeUrl)
+  const [youTubeUrl, setYouTubeUrl] = useState('')
   const [videoInfo, setVideoInfo] = useState<videoInfo>()
   const [error, setError] = useState<Error>()
   const [bitrate, setBitrate] = useState(localStorage.getItem(LocalStorageKey.Bitrate) || defaults.bitrate)

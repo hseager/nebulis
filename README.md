@@ -1,10 +1,14 @@
 ### n e b u l i s
 
-# To do
+Desktop app to download YouTube MP3s with MetaData editing
+
+![screenshot](screenshot/image1.jpg)
+![screenshot](screenshot/image2.jpg)
+
+## To do
 
 - Production build .exe
 - Checkboxes in preferences for metadata fields
-- Styling
 - Adjust start and end times
 - Write unit tests (which frameworks? WebDriverIO, mocha, jest? needs to work with typescript, react & electron. How to test multiple OS for ffmpeg?)
 
