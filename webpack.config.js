@@ -17,6 +17,9 @@ const commonConfig = {
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
+  externals: {
+    deasync: 'deasync',
+  },
   module: {
     rules: [
       {

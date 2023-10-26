@@ -1,10 +1,10 @@
 ### n e b u l i s
 
-Windows app to download YouTube MP3s with MetaData editing
+Windows app to download YouTube videos as MP3s with metadata editing
 
-![screenshot](screenshots/image1.webp)
+![screenshot](public/images/screenshots/image1.webp)
 
-![screenshot](screenshots/image2.webp)
+![screenshot](public/images/screenshots/image2.webp)
 
 ## To do
 
@@ -24,3 +24,8 @@ Windows app to download YouTube MP3s with MetaData editing
 2. npm install
 3. npm run watch
 4. npm run start
+
+# Build for prod
+
+1. npm run build
+2. npm run package
