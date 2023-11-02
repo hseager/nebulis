@@ -48,10 +48,24 @@ export type MetaData = {
   trackNumber: string
 }
 
-export type DownloadVideoRequest = { youTubeUrl: string; libraryFolder: string; bitrate: string; filename: string; metaData: MetaData }
+export type DirectorySettings = {
+  libraryFolder: string
+  includeArtistInFolderPath?: boolean
+  includeAlbumInFolderPath?: boolean
+}
+
+export type DownloadVideoRequest = {
+  youTubeUrl: string
+  bitrate: string
+  filename: string
+  metaData: MetaData
+  directorySettings: DirectorySettings
+}
 
 export enum LocalStorageKey {
   LibraryFolder = 'libraryFolder',
   Bitrate = 'bitrate',
   SplitArtistTitleChars = 'splitArtistTitleChars',
+  IncludeArtistInFolderPath = 'includeArtistInFolderPath',
+  IncludeAlbumInFolderPath = 'includeAlbumInFolderPath',
 }

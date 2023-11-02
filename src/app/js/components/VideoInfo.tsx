@@ -17,6 +17,8 @@ type VideoInfoProps = {
   bitrate: string
   setStatus: Function
   splitArtistTitleChars: string
+  includeArtistInFolderPath: boolean
+  includeAlbumInFolderPath: boolean
 }
 
 const VideoInfo = ({
@@ -28,6 +30,8 @@ const VideoInfo = ({
   setError,
   setStatus,
   splitArtistTitleChars,
+  includeArtistInFolderPath,
+  includeAlbumInFolderPath,
 }: VideoInfoProps) => {
   const { title: videoTitle, author, lengthSeconds, thumbnails, uploadDate, viewCount, likes } = videoInfo.videoDetails
 
@@ -56,7 +60,6 @@ const VideoInfo = ({
 
     const downloadRequestData: DownloadVideoRequest = {
       youTubeUrl,
-      libraryFolder,
       bitrate,
       filename,
       metaData: {
@@ -66,6 +69,11 @@ const VideoInfo = ({
         albumArtist,
         genre,
         trackNumber,
+      },
+      directorySettings: {
+        libraryFolder,
+        includeArtistInFolderPath,
+        includeAlbumInFolderPath,
       },
     }
 

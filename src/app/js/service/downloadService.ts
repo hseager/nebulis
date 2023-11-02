@@ -3,12 +3,27 @@ import * as path from 'path'
 import fs from 'fs-extra'
 import { BrowserWindow } from 'electron'
 import ffmpeg from 'fluent-ffmpeg'
-import { DownloadVideoRequest, MetaData, ResponseType } from '../types/types'
+import { DirectorySettings, DownloadVideoRequest, MetaData, ResponseType } from '../types/types'
 
 export class DownloadService {
   private static ffmpegBinaries = path.join(__dirname, 'ffmpeg.exe')
   private static isRateLimited = false
   private static rateLimitAmount = 50
+
+  private static buildFolderPath = (directorySettings: DirectorySettings, metaData: MetaData) => {
+    const { libraryFolder, includeArtistInFolderPath, includeAlbumInFolderPath } = directorySettings
+
+    let folderPath = libraryFolder
+
+    if (includeArtistInFolderPath && metaData.artist) {
+      folderPath += `/${metaData.artist}`
+    }
+    if (includeAlbumInFolderPath && metaData.album) {
+      folderPath += `/${metaData.album}`
+    }
+
+    return folderPath
+  }
 
   static getVideoInfo = (youTubeUrl: string) => {
     return new Promise((resolve, reject) => {
@@ -21,11 +36,15 @@ export class DownloadService {
   }
 
   static downloadVideo = (win: BrowserWindow, request: DownloadVideoRequest) => {
-    const { youTubeUrl, libraryFolder, filename, bitrate, metaData } = request
+    const { youTubeUrl, filename, bitrate, metaData, directorySettings } = request
+    const folderPath = this.buildFolderPath(directorySettings, metaData)
+
+    console.log(folderPath)
+
     return new Promise((resolve, reject) => {
       try {
-        this.downloadMp4Video(win, youTubeUrl, libraryFolder, filename)
-          .then((tempMp4Path: any) => this.convertMp4ToMp3(win, tempMp4Path, libraryFolder, bitrate, filename, metaData))
+        this.downloadMp4Video(win, youTubeUrl, folderPath, filename)
+          .then((tempMp4Path: any) => this.convertMp4ToMp3(win, tempMp4Path, folderPath, bitrate, filename, metaData))
           .then((tempMp4Path: any) => fs.unlinkSync(tempMp4Path))
           .then(resolve)
           .catch(reject)
@@ -35,12 +54,12 @@ export class DownloadService {
     })
   }
 
-  private static downloadMp4Video = (win: BrowserWindow, youTubeUrl: string, libraryFolder: string, filename: string) => {
+  private static downloadMp4Video = (win: BrowserWindow, youTubeUrl: string, folderPath: string, filename: string) => {
     return new Promise((resolve, reject) => {
       try {
-        if (!fs.existsSync(libraryFolder)) fs.mkdirSync(libraryFolder)
+        if (!fs.existsSync(folderPath)) fs.mkdirSync(folderPath)
 
-        const fullPath = path.join(libraryFolder, `tmp_${filename}.mp4`)
+        const fullPath = path.join(folderPath, `tmp_${filename}.mp4`)
         const videoDownload = ytdl(youTubeUrl, { filter: 'audioonly' })
         let progressTimeout: ReturnType<typeof setTimeout>
 

@@ -12,6 +12,10 @@ type PreferencesPageProps = {
   setError: Dispatch<SetStateAction<Error | undefined>>
   splitArtistTitleChars: string
   setSplitArtistTitleChars: Dispatch<SetStateAction<string>>
+  includeArtistInFolderPath: boolean
+  setIncludeArtistInFolderPath: Dispatch<SetStateAction<boolean>>
+  includeAlbumInFolderPath: boolean
+  setIncludeAlbumInFolderPath: Dispatch<SetStateAction<boolean>>
 }
 
 const PreferencesPage = ({
@@ -22,6 +26,10 @@ const PreferencesPage = ({
   setError,
   splitArtistTitleChars,
   setSplitArtistTitleChars,
+  includeArtistInFolderPath,
+  setIncludeArtistInFolderPath,
+  includeAlbumInFolderPath,
+  setIncludeAlbumInFolderPath,
 }: PreferencesPageProps) => {
   const updateLibraryFolder = () =>
     api
@@ -33,15 +41,27 @@ const PreferencesPage = ({
       .catch(setError)
 
   const updateBitrate = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const bitrate = event.target.value
-    setBitrate(bitrate)
-    localStorage.setItem(LocalStorageKey.Bitrate, bitrate)
+    const { value } = event.target
+    setBitrate(value)
+    localStorage.setItem(LocalStorageKey.Bitrate, value)
   }
 
   const updateSplitArtistTitleChars = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const chars = event.target.value
-    setSplitArtistTitleChars(chars)
-    localStorage.setItem(LocalStorageKey.SplitArtistTitleChars, chars)
+    const { value } = event.target
+    setSplitArtistTitleChars(value)
+    localStorage.setItem(LocalStorageKey.SplitArtistTitleChars, value)
+  }
+
+  const updateIncludeArtistInFolderPath = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { checked } = event.target
+    setIncludeArtistInFolderPath(checked)
+    localStorage.setItem(LocalStorageKey.IncludeArtistInFolderPath, checked.toString())
+  }
+
+  const updateIncludeAlbumInFolderPath = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { checked } = event.target
+    setIncludeAlbumInFolderPath(checked)
+    localStorage.setItem(LocalStorageKey.IncludeAlbumInFolderPath, checked.toString())
   }
 
   return (
@@ -71,7 +91,7 @@ const PreferencesPage = ({
           <option value="320">320 kbps (Full Quality)</option>
         </select>
       </div>
-      <div>
+      <div className="mb-4">
         <label className="block text-slate-300 mb-2">Split artist/title by characters</label>
         <input
           name="split-title-by"
@@ -80,6 +100,31 @@ const PreferencesPage = ({
           value={splitArtistTitleChars}
           onChange={updateSplitArtistTitleChars}
         />
+      </div>
+      <div>
+        <label className="block text-slate-300 mb-2">Directory settings</label>
+        <p className="mb-2 flex items-center text-xs">
+          <input
+            id="include-artist"
+            name="include-artist-in-folder-path"
+            type="checkbox"
+            className="mr-2"
+            checked={includeArtistInFolderPath}
+            onChange={updateIncludeArtistInFolderPath}
+          />{' '}
+          <label htmlFor="include-artist">Include artist in directory path (/Nirvana/Smells Like Teen Spirit.mp3)</label>
+        </p>
+        <p className="flex items-center text-xs">
+          <input
+            id="include-album"
+            name="include-album-in-folder-path"
+            type="checkbox"
+            className="mr-2"
+            checked={includeAlbumInFolderPath}
+            onChange={updateIncludeAlbumInFolderPath}
+          />{' '}
+          <label htmlFor="include-album">Include album in directory path (/Nirvana/Nevermind/Smells Like Teen Spirit.mp3)</label>
+        </p>
       </div>
     </div>
   )

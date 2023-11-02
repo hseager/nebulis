@@ -18,6 +18,8 @@ type DownloadPageProps = {
   status: Status
   setStatus: Function
   splitArtistTitleChars: string
+  includeArtistInFolderPath: boolean
+  includeAlbumInFolderPath: boolean
 }
 
 const DownloadPage = ({
@@ -32,6 +34,8 @@ const DownloadPage = ({
   status,
   setStatus,
   splitArtistTitleChars,
+  includeArtistInFolderPath,
+  includeAlbumInFolderPath,
 }: DownloadPageProps) => {
   return (
     <>
@@ -54,6 +58,8 @@ const DownloadPage = ({
           setError={setError}
           setStatus={setStatus}
           splitArtistTitleChars={splitArtistTitleChars}
+          includeArtistInFolderPath={includeArtistInFolderPath}
+          includeAlbumInFolderPath={includeAlbumInFolderPath}
         />
       )}
     </>

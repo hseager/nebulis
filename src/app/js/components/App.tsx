@@ -10,7 +10,9 @@ const { api } = window
 const App: React.FC = () => {
   const defaults = {
     bitrate: '160',
-    splitArtistTitleChars: '-~',
+    splitArtistTitleChars: '-~|',
+    includeArtistInFolderPath: false,
+    includeAlbumInFolderPath: false,
   }
 
   const [libraryFolder, setLibraryFolder] = useState(localStorage.getItem(LocalStorageKey.LibraryFolder) || '')
@@ -22,6 +24,12 @@ const App: React.FC = () => {
   const [status, setStatus] = useState<Status>(Status.Ready)
   const [splitArtistTitleChars, setSplitArtistTitleChars] = useState(
     localStorage.getItem(LocalStorageKey.SplitArtistTitleChars) || defaults.splitArtistTitleChars
+  )
+  const [includeArtistInFolderPath, setIncludeArtistInFolderPath] = useState(
+    localStorage.getItem(LocalStorageKey.IncludeArtistInFolderPath) === 'true' || defaults.includeArtistInFolderPath
+  )
+  const [includeAlbumInFolderPath, setIncludeAlbumInFolderPath] = useState(
+    localStorage.getItem(LocalStorageKey.IncludeAlbumInFolderPath) === 'true' || defaults.includeAlbumInFolderPath
   )
 
   if (!libraryFolder) api.send(RequestType.GetPreference, Preference.LibraryFolder).then(setLibraryFolder).catch(setError)
@@ -43,6 +51,8 @@ const App: React.FC = () => {
           status={status}
           setStatus={setStatus}
           splitArtistTitleChars={splitArtistTitleChars}
+          includeArtistInFolderPath={includeArtistInFolderPath}
+          includeAlbumInFolderPath={includeAlbumInFolderPath}
         />
       )}
       {page === PageType.Preferences && (
@@ -54,6 +64,10 @@ const App: React.FC = () => {
           setError={setError}
           splitArtistTitleChars={splitArtistTitleChars}
           setSplitArtistTitleChars={setSplitArtistTitleChars}
+          includeArtistInFolderPath={includeArtistInFolderPath}
+          setIncludeArtistInFolderPath={setIncludeArtistInFolderPath}
+          includeAlbumInFolderPath={includeAlbumInFolderPath}
+          setIncludeAlbumInFolderPath={setIncludeAlbumInFolderPath}
         />
       )}
     </div>
