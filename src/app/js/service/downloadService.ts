@@ -39,8 +39,6 @@ export class DownloadService {
     const { youTubeUrl, filename, bitrate, metaData, directorySettings } = request
     const folderPath = this.buildFolderPath(directorySettings, metaData)
 
-    console.log(folderPath)
-
     return new Promise((resolve, reject) => {
       try {
         this.downloadMp4Video(win, youTubeUrl, folderPath, filename)
