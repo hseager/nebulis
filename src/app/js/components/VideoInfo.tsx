@@ -5,6 +5,7 @@ import { DownloadCloud as DownloadIcon } from 'react-feather'
 import FileInfo from './FileInfo'
 import { parseVideoArtist, parseVideoTitle } from '../utils/VideoDataParser'
 import { DownloadVideoRequest, RequestType, Status } from '../types/types'
+import filenamify from 'filenamify/browser'
 
 const { api } = window
 
@@ -51,6 +52,10 @@ const VideoInfo = ({
       setArtist(parseVideoArtist(splitArtistTitleChars, videoTitle))
     }
   }, [videoInfo])
+
+  useEffect(() => {
+    setFilename(filenamify(filename, { replacement: '' }))
+  }, [filename])
 
   const download = () => {
     if (!filename) return setError(new Error('Please enter a filename'))

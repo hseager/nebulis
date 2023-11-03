@@ -15,7 +15,6 @@ Windows app to download YouTube videos as MP3s with metadata editing
 
 ## Bugs
 
-- Bug when there's a special character in name "Nu:tone"
 - convertSecondstoMintues zero padding bug
 
 # Setup Dev environment
