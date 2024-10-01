@@ -1,12 +1,17 @@
 import ytdl from '@distube/ytdl-core'
 import * as path from 'path'
+import os from 'os'
 import fs from 'fs-extra'
 import { BrowserWindow } from 'electron'
 import ffmpeg from 'fluent-ffmpeg'
 import { DirectorySettings, DownloadVideoRequest, MetaData, ResponseType } from '../types/types'
 
 export class DownloadService {
-  private static ffmpegBinaries = path.join(__dirname, 'ffmpeg.exe')
+  private static ffmpegBinaries =
+    os.platform() === 'win32'
+      ? path.join(__dirname, 'ffmpeg.exe') // Windows
+      : 'ffmpeg' // Linux (system-wide installation)
+
   private static isRateLimited = false
   private static rateLimitAmount = 50
 
@@ -98,7 +103,7 @@ export class DownloadService {
           .setFfmpegPath(this.ffmpegBinaries)
           .format('mp3')
           .audioBitrate(bitrate)
-          .on('progress', (progress) => win.webContents.send(ResponseType.ConversionProgress, Math.floor(progress.percent)))
+          .on('progress', (progress) => win.webContents.send(ResponseType.ConversionProgress, Math.floor(progress.percent ?? 0)))
           .outputOptions('-metadata', `title=${title}`)
           .outputOptions('-metadata', `artist=${artist}`)
           .outputOptions('-metadata', `album=${album}`)

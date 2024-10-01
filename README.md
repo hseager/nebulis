@@ -1,10 +1,19 @@
 ### n e b u l i s
 
-Windows app to download YouTube videos as MP3s with metadata editing
+A desktop app for downloading music from YouTube videos with metadata editing.
 
 ![screenshot](public/images/screenshots/image1.webp)
 
 ![screenshot](public/images/screenshots/image2.webp)
+
+## Linux
+
+ffmpeg must be installed when using on Linux
+
+```
+sudo apt update
+sudo apt install ffmpeg
+```
 
 ## To do
 
