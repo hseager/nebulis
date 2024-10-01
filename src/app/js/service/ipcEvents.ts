@@ -1,4 +1,4 @@
-import { BrowserWindow, ipcMain } from 'electron'
+import { BrowserWindow, ipcMain, IpcMainInvokeEvent } from 'electron'
 import 'regenerator-runtime/runtime'
 import { PreferenceService } from './preferenceService'
 import { DownloadService } from './downloadService'
@@ -10,11 +10,15 @@ const initIpcEvents = (win: BrowserWindow) => {
   ipcMain.handle(RequestType.UpdateLibraryFolder, () => LibraryService.updateLibraryFolder(win))
 
   // Preferences
-  ipcMain.handle(RequestType.GetPreference, (event: Event, preference: Preference) => PreferenceService.getPreference(preference))
+  ipcMain.handle(RequestType.GetPreference, (event: IpcMainInvokeEvent, preference: Preference) =>
+    PreferenceService.getPreference(preference)
+  )
 
   // Download
-  ipcMain.handle(RequestType.GetVideoInfo, (event: Event, youTubeUrl: string) => DownloadService.getVideoInfo(youTubeUrl))
-  ipcMain.handle(RequestType.DownloadVideo, (event: Event, request: DownloadVideoRequest) => DownloadService.downloadVideo(win, request))
+  ipcMain.handle(RequestType.GetVideoInfo, (event: IpcMainInvokeEvent, youTubeUrl: string) => DownloadService.getVideoInfo(youTubeUrl))
+  ipcMain.handle(RequestType.DownloadVideo, (event: IpcMainInvokeEvent, request: DownloadVideoRequest) =>
+    DownloadService.downloadVideo(win, request)
+  )
 }
 
 export default initIpcEvents
